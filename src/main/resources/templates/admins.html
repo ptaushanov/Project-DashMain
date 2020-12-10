@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Admins Panel</title>
+<link rel="stylesheet" href="css/materialize.min.css">
+<script src="js/materialize.min.js"></script>
+<script defer src="js/admins.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="center-align">Admins Panel</h2>
+        <form>
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName">
+
+            <button id="addAdminBTN" class="right btn waves-effect waves-light"> Add Admin
+            </button>
+        </form>
+
+        <p th:if=${admins.empty} class="red-text text-accent-4">No administrators</p>
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>First name</td>
+                    <td>Last name</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="admin: ${admins}">
+                    <td th:text="${admin.id}"></td>
+                    <td th:text="${admin.firstName}"></td>
+                    <td th:text="${admin.lastName}"></td>
+                    <td><button class="waves-effect waves-light btn-small blue">Edit</button></td>
+                    <td><button class="waves-effect waves-light btn-small red darken-3">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
