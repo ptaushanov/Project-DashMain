@@ -3,19 +3,18 @@
 <title>Admins Panel</title>
 <link rel="stylesheet" href="css/materialize.min.css">
 <script src="js/materialize.min.js"></script>
-<script defer src="js/admins.js"></script>
 </head>
 
 <body>
     <div class="container">
         <h2 class="center-align">Admins Panel</h2>
-        <form>
+        <form th:action="@{/admins}" method="post" th:object="${admin}">
             <label for="firstName">First name</label>
-            <input type="text" id="firstName" name="firstName">
+            <input type="text" id="firstName" th:name="firstName">
             <label for="lastName">Last name</label>
-            <input type="text" id="lastName" name="lastName">
+            <input type="text" id="lastName" th:name="lastName">
 
-            <button id="addAdminBTN" class="right btn waves-effect waves-light"> Add Admin
+            <button id="addAdminBTN" type="submit" class="right btn waves-effect waves-light"> Add Admin
             </button>
         </form>
 

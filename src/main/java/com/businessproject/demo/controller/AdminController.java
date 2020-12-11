@@ -15,7 +15,7 @@ public class AdminController {
     AdminRepository adminRepository;
 
     @PostMapping("/admins")
-    public String addAdmin(@Valid @RequestBody Admin admin) {
+    public String addAdmin(@ModelAttribute("admin") Admin admin) {
         adminRepository.save(admin);
         return "Added new admin!";
     }
