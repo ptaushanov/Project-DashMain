@@ -2,27 +2,51 @@
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
 <title>Admins Panel</title>
 <link rel="stylesheet" href="css/materialize.min.css">
+<link rel="stylesheet" href="css/admins.css">
 <script src="js/materialize.min.js"></script>
+<script defer src="js/admin_bind_buttons.js"></script>
 </head>
 
 <body>
     <div class="container">
         <h2 class="center-align">Admins Panel</h2>
-        <form th:action="@{/admins}" method="post" th:object="${admin}">
-            <label for="firstName">First name</label>
-            <input type="text" id="firstName" th:name="firstName">
-            <label for="lastName">Last name</label>
-            <input type="text" id="lastName" th:name="lastName">
+        <div class="row" id="formDiv">
+            <form th:action="@{/admins}" method="post" th:object="${admin}" class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <label for="firstName">First name</label>
+                        <input required=true minlength="2" maxlength="15" type="text" id="firstName"
+                            th:name="firstName">
+                    </div>
+                    <div class="input-field col s6">
+                        <label for="lastName">Last name</label>
+                        <input required=true minlength="2" maxlength="15" type="text" id="lastName" th:name="lastName">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="username">Username</label>
+                        <input required=true minlength="2" maxlength="30" type="text" id="username" th:name="username">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="password">Password</label>
+                        <input required=true minlength="8" maxlength="30" type="password" id="password"
+                            th:name="password">
+                    </div>
+                </div>
 
-            <button id="addAdminBTN" type="submit" class="right btn waves-effect waves-light"> Add Admin
-            </button>
-        </form>
+                <button id="addAdminBTN" type="submit" class="right btn waves-effect waves-light"> Add Admin </button>
+            </form>
+        </div>
 
         <p th:if=${admins.empty} class="red-text text-accent-4">No administrators</p>
         <table class="highlight">
             <thead>
                 <tr>
                     <td>Id</td>
+                    <td>Username</td>
                     <td>First name</td>
                     <td>Last name</td>
                     <td>Edit</td>
@@ -30,12 +54,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="admin: ${admins}">
-                    <td th:text="${admin.id}"></td>
+                <tr th:each="admin: ${admins}" class="admin_row">
+                    <td th:text="${admin.id}" class="admin_id"></td>
+                    <td th:text="${admin.username}" class="admin_username"></td>
                     <td th:text="${admin.firstName}"></td>
                     <td th:text="${admin.lastName}"></td>
-                    <td><button class="waves-effect waves-light btn-small blue">Edit</button></td>
-                    <td><button class="waves-effect waves-light btn-small red darken-3">Delete</button></td>
+                    <td th:if="${admin.username != 'admin'}"><button
+                            class="waves-effect waves-light btn-small blue">Edit</button></td>
+                    <td th:if="${admin.username != 'admin'}"><button
+                            class="waves-effect waves-light btn-small red darken-3 deleteBTN">Delete</button></td>
                 </tr>
             </tbody>
         </table>

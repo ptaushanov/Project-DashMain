@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 public class AdminController {
@@ -15,10 +16,20 @@ public class AdminController {
     AdminRepository adminRepository;
 
     @PostMapping("/admins")
-    public String addAdmin(@ModelAttribute("admin") Admin admin) {
-        adminRepository.save(admin);
-        return "Added new admin!";
+    public ModelAndView addAdmin(@Valid @ModelAttribute("admin") Admin admin) {
+        // TODO Check if username is unique
+
+        if (!admin.getUsername().equals("admin")) {
+            adminRepository.save(admin);
+        }
+        // TODO ELSE Return Error Bad Request
+        // TODO And not a view
+
+        ModelAndView mav = new ModelAndView("admin_added");
+        mav.addObject("username", admin.getUsername());
+        return mav;
     }
+
     // @PostMapping("/admin/representatives")
     // @PostMapping("/admin/products")
 
@@ -31,7 +42,19 @@ public class AdminController {
     // @GetMapping("/admin/representatives")
     // @GetMapping("/admin/products")
 
-    // @DeleteMapping("/admin/admins")
+    @DeleteMapping("/admins/{id}")
+    public void deleteAdmin(@PathVariable String id) {
+
+        Optional<Admin> admin = adminRepository.findById(id);
+        if(admin.isPresent()) {
+            String username = admin.get().getUsername();
+            if (!username.equals("admin")) {
+                adminRepository.deleteById(id);
+            }
+            //TODO ELSE return Bad Request
+        }
+    }
+
     // @DeleteMapping("/admin/representatives")
     // @DeleteMapping("/admin/products")
 

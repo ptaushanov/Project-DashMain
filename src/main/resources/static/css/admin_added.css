@@ -1,0 +1,13 @@
+body {
+    background-color: whitesmoke;
+}
+
+.container {
+    min-height: 100vh;
+    height: 100vh;
+}
+
+.card {
+    min-width: 600px;
+    width: 600px;
+}
