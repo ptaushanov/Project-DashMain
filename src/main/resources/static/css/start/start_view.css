@@ -1,0 +1,47 @@
+.navigation {
+    position: absolute;
+    padding: 1rem;
+}
+
+.vh-expand {
+    min-height: 100vh !important;
+}
+
+.selection {
+    height: 30rem;
+}
+
+.select-selection {
+    height: 12rem;
+    max-width: 15rem;
+}
+
+.select-selection p {
+    margin: .3rem auto;
+}
+
+.flex {
+    flex: 1;
+}
+
+.m-auto {
+    margin: auto;
+}
+
+.select-text {
+    color: white;
+}
+
+.card-panel {
+    background-color: #4a148c;
+    transition: background-color .2s linear;
+}
+
+.card-panel:hover {
+    cursor: pointer;
+    background-color: #4a148c31;
+}
+
+.card-panel:hover .select-text {
+    color: #4a148c;
+}
