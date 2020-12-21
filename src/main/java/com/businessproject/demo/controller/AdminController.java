@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +34,11 @@ public class AdminController {
     // @PostMapping("/admin/representatives")
     // @PostMapping("/admin/products")
 
+    @GetMapping("/api/admins")
+    public List<Admin> getAllAdmins() {
+        return adminRepository.findAll();
+    }
+
     @GetMapping("/admins")
     public ModelAndView getAdmins() {
         ModelAndView mav = new ModelAndView("admins");
@@ -46,7 +52,7 @@ public class AdminController {
     public void deleteAdmin(@PathVariable String id) {
 
         Optional<Admin> admin = adminRepository.findById(id);
-        if(admin.isPresent()) {
+        if (admin.isPresent()) {
             String username = admin.get().getUsername();
             if (!username.equals("admin")) {
                 adminRepository.deleteById(id);

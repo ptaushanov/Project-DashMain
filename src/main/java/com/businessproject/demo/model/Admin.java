@@ -1,14 +1,12 @@
 package com.businessproject.demo.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Document(collection = "Admins")
-public class Admin {
-    @Id
+public class Admin implements Entity{
     private String id;
 
     @NotNull(message = "First name was not provided!")
@@ -23,16 +21,8 @@ public class Admin {
     @Size(min=2, max=30, message = "Username should be between 2 and 30 characters.")
     private String username;
 
-    @NotNull(message = "Password was not provided!")
-    @Size(min=8, max=30, message = "Password should be between 8 and 30 characters.")
-    private String password;
-
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -51,19 +41,16 @@ public class Admin {
         this.lastName = lastName;
     }
 
+    @Override
+    public String getFullName() {
+        return String.format("%s %s", this.firstName, this.lastName);
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
