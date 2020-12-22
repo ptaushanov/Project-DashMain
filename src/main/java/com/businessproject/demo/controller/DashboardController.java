@@ -27,12 +27,14 @@ public class DashboardController {
     @GetMapping("/start/administrator")
     public String getAdminSelectView(Model model){
         model.addAttribute("entities", dashboardService.getAllAdmins());
+        model.addAttribute("role", "admin");
         return "start/select_view";
     }
 
     @GetMapping("/start/representative")
     public String getSalesRepSelectView(Model model){
         model.addAttribute("entities", dashboardService.getAllSalesReps());
+        model.addAttribute("role", "salesRep");
         return "start/select_view";
     }
 

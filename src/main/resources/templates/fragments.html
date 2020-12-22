@@ -5,12 +5,19 @@
 <script th:src="@{/js/materialize.min.js}"></script>
 </head>
 
+<head th:fragment="simple_head">
+    <link rel="stylesheet" th:href="@{/css/materialize.min.css}">
+    <script th:src="@{/js/materialize.min.js}"></script>
+</head>
+
 <div class="row" th:fragment="entity_info">
     <div class="col s12 mt-10">
         <h4 th:text="|${entity.fullName} (${entity.username})|"></h4>
         <p th:text="${entity.id}"></p>
         <a th:href="@{/start/} + ${rolePath}" class="btn-small waves-effect waves-light pink darken-4">Switch</a>
-        <a class="btn-small waves-effect waves-light amber darken-4">Add New</a>
+        <a th:href="@{/dashboard/new/{role}(role = ${rolePath}, requesterId=${entity.id})}"
+            class=" btn-small waves-effect waves-light amber darken-4">Add
+            New</a>
     </div>
 </div>
 

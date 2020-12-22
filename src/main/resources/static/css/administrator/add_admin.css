@@ -1,0 +1,16 @@
+.vh-expand {
+    min-height: 100vh;
+}
+
+.navigation {
+    position: absolute;
+    padding: 1rem;
+}
+
+.plumed {
+    padding: 2rem 4rem;
+}
+
+form {
+    min-width: 20rem;
+}

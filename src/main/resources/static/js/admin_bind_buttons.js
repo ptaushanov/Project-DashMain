@@ -7,7 +7,7 @@ for(let adminRow of adminRows){
 
     if (deleteBTN != null){
         deleteBTN.addEventListener("click", ()=>{
-            fetch('/admins/' + id.innerText, {
+            fetch('/dashboard/admins/' + id.innerText, {
                 method: 'DELETE',
             })
             .then(res => {
