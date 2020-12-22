@@ -1,5 +1,6 @@
 package com.businessproject.demo.service;
 
+import com.businessproject.demo.exeption.InvalidRoleException;
 import com.businessproject.demo.model.Admin;
 import com.businessproject.demo.model.Entity;
 import com.businessproject.demo.model.SalesRepresentative;
@@ -26,7 +27,7 @@ public class DashboardService {
     public  List<SalesRepresentative> getAllSalesReps(){
         return  salesRepRepository.findAll();
     }
-    public Entity getEntityInfo(String role, String id) {
+    public Entity getEntityInfo(String role, String id) throws InvalidRoleException {
         if(role.equals("admin")) {
             Optional<Admin> admin = adminRepository.findById(id);
             if (admin.isPresent()){
@@ -40,7 +41,7 @@ public class DashboardService {
             }
         }
         else {
-            //TODO: Custom error
+            throw new InvalidRoleException();
         }
 
         // TODO: Remove

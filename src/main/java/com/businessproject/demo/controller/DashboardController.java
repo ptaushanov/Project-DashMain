@@ -1,5 +1,6 @@
 package com.businessproject.demo.controller;
 
+import com.businessproject.demo.exeption.InvalidRoleException;
 import com.businessproject.demo.model.Entity;
 import com.businessproject.demo.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,24 @@ public class DashboardController {
     }
 
     @GetMapping("/dashboard")
-    public String getDashboardView(@RequestParam("role") String role, @RequestParam("id") String id,Model model){
+    public String getDashboardView(@RequestParam(value = "role", required = false) String role, @RequestParam(value = "id", required = false) String id,Model model){
 
-        Entity entity = dashboardService.getEntityInfo(role, id);
-        model.addAttribute("entity", entity);
-        model.addAttribute("rolePath", dashboardService.getRole(role));
-        return "dashboard/main_view";
+        if(role == null || id == null){
+            return "dashboard/error_view";
+        }
+
+        Entity entity;
+        try {
+            entity = dashboardService.getEntityInfo(role, id);
+            model.addAttribute("entity", entity);
+            model.addAttribute("rolePath", dashboardService.getRole(role));
+            return "dashboard/main_view";
+
+        } catch (InvalidRoleException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "dashboard/error_view";
+        }
+
     }
 
 }
