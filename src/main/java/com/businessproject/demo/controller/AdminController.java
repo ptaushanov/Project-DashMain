@@ -1,5 +1,7 @@
 package com.businessproject.demo.controller;
 
+import com.businessproject.demo.exeption.AuthorizationException;
+import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.Admin;
 import com.businessproject.demo.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,23 @@ public class AdminController {
     @PostMapping("/new/administrator")
     public ModelAndView addAdmin(@Valid @ModelAttribute("admin") Admin admin) {
 
-        adminService.saveAdmin(admin);
-
         ModelAndView mav = new ModelAndView("administrator/admin_added");
-        mav.addObject("username", admin.getUsername());
-        mav.addObject("requesterId", admin.getAddedById());
+        try {
+            adminService.saveAdmin(admin);
+            mav.addObject("username", admin.getUsername());
+            mav.addObject("isError", false);
+            mav.addObject("requesterId", admin.getAddedById());
+
+        } catch (UsernameAlreadyExists usernameAlreadyExists) {
+            mav.addObject("isError", true);
+            mav.addObject("errorMessage", usernameAlreadyExists.getMessage());
+            mav.addObject("requesterId", admin.getAddedById());
+        }
+        catch (AuthorizationException authorizationException){
+            mav = new ModelAndView("administrator/invalid_requester");
+            mav.addObject("errorMessage", authorizationException.getMessage());
+        }
+
         return mav;
     }
 

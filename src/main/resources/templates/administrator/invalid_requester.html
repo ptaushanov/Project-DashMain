@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
-<title>Add Admin</title>
+<title>Invalid Request</title>
 <th:block th:insert="fragments :: common_head"></th:block>
 <link rel="stylesheet" th:href="@{/css/administrator/common_style.css}">
 </head>
@@ -11,16 +11,11 @@
             <div class="col s12">
                 <div class="card purple darken-4">
                     <div class="card-content white-text">
-                        <th:block th:if="${isError}">
-                            <span class="card-title" th:text="${errorMessage}">Error</span>
-                        </th:block>
-                        <th:block th:unless="${isError}">
-                            <span class="card-title">New admin was added</span>
-                            <p>Admin with username <span th:text="${username}"></span> was added successfully!</p>
-                        </th:block>
+                        <span class="card-title">Invalid Request</span>
+                        <p th:text="${errorMessage}">Unauthorized access was detected.</p>
                     </div>
                     <div class="card-action">
-                        <a class="white-text" th:href="@{/dashboard(role='admin',id= ${requesterId})}">Dashboard</a>
+                        <a class="white-text" th:href="@{/start}">Go back</a>
                     </div>
                 </div>
             </div>

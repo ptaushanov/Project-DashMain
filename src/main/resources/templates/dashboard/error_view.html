@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Dashboard Error</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+
+<body>
+    <div class="container valign-wrapper">
+        <div class="row">
+            <div class="col s12">
+                <div class="card purple darken-4">
+                    <div class="card-content white-text">
+                        <span class="card-title">Invalid Request</span>
+                        <p th:text="${errorMessage}">Something went wrong!</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" th:href="@{/start}">Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</head>

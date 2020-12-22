@@ -1,4 +1,6 @@
 package com.businessproject.demo.service;
+import com.businessproject.demo.exeption.AuthorizationException;
+import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.Admin;
 import com.businessproject.demo.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +15,25 @@ public class AdminService {
     private AdminRepository adminRepository;
 
 
-    public void saveAdmin(Admin admin) {
-        // TODO Check if username is unique
-        // TODO Check if the admin who adds the new admin is valid
+    public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException{
 
-        if (!admin.getUsername().equals("admin")) {
-            adminRepository.save(admin);
+        if(!adminRepository.existsById(admin.getAddedById())){
+            throw new AuthorizationException();
         }
 
-        // TODO ELSE Return Error Bad Request
-        // TODO And not a view
+        if(adminRepository.existsByUsername(admin.getUsername())){
+            throw new UsernameAlreadyExists();
+        }
+
+        adminRepository.save(admin);
     }
 
     public boolean existsAdminById(String id){
         return  adminRepository.existsById(id);
+    }
+
+    public  boolean existsAdminByUsername(String username){
+        return adminRepository.existsByUsername(username);
     }
 
     public Admin getAdminById(String id) {
