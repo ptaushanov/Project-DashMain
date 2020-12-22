@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
 <title>Select from below</title>
-<link rel="stylesheet" th:href="@{/css/materialize.min.css}">
-<link rel="stylesheet" th:href=" @{/css/animate.min.css}">
-<link rel="stylesheet" th:href="@{/css/start/start_view.css}">
+<th:block th:insert="fragments :: common_head"></th:block>
 <script th:src="@{/js/materialize.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/start/start_view.css}">
 </head>
 
 <body>
@@ -17,8 +16,8 @@
                 <h1 class="center-align purple-text text-darken-4">This section is empty</h1>
             </div>
             <div class="col" th:each="entity: ${entities}">
-                <div class="card-panel select-selection valign-wrapper">
-                    <a th:href="@{/dashboard(role='admin',id= ${entity.id})}">
+                <a th:href="@{/dashboard(role='admin',id= ${entity.id})}">
+                    <div class="card-panel select-selection valign-wrapper">
                         <div class="row m-auto">
                             <div class="col s12">
                                 <p th:text="${entity.firstName + ' ' + entity.lastName}"
@@ -28,8 +27,8 @@
                                 <p class="center-align select-text flow-text" th:text="${entity.username}"></p>
                             </div>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

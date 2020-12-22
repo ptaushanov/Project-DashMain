@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
 <title>Dashboard</title>
-<link rel="stylesheet" th:href="@{/css/materialize.min.css}">
-<link rel="stylesheet" th:href=" @{/css/animate.min.css}">
+<th:block th:insert="fragments :: common_head"></th:block>
 <link rel="stylesheet" th:href="@{/css/dashboard/main_view.css}">
-<script th:src="@{/js/materialize.min.js}"></script>
 </head>
 
 <body>
@@ -12,30 +10,14 @@
         <a class="waves-effect waves-light btn-small left white-text purple darken-4" th:href="@{/start}">Back</a>
     </div>
     <div class="container animate__animated animate__fadeIn">
-        <div class="row ">
-            <div class="col s12 mt-10">
-                <h4 th:text="|${entity.fullName} (${entity.username})|"></h4>
-                <p th:text="${entity.id}"></p>
-                <a th:href="@{/start/} + ${rolePath}"
-                    class="btn-small waves-effect waves-light pink darken-4">Switch</a>
-                <a class="btn-small waves-effect waves-light amber darken-4">Add Admin</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <h5>Sales Representatives</h5>
-                <a class="btn-small waves-effect waves-light indigo darken-4">Manage</a>
-                <a class="btn-small waves-effect waves-light deep-purple accent-3">Add Representative</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <h5>Products</h5>
-                <a class="btn-small waves-effect waves-light pink darken-2 ">Manage</a>
-                <a class="btn-small waves-effect waves-light  deep-orange">Add Product</a>
-            </div>
-        </div>
+        <th:block th:insert="fragments :: entity_info"></th:block>
 
+        <th:block th:if="${rolePath == 'administrator'}" <th:block th:insert="fragments :: block_salesReps"></th:block>
+        </th:block>
+
+        <th:block th:if="${rolePath == 'administrator'}" <th:block th:insert="fragments :: block_manageProducts">
+        </th:block>
+        </th:block>
     </div>
 </body>
 
