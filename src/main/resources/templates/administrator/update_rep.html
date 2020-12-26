@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
-<title>Add Admin</title>
+<title>Update Representative</title>
 <th:block th:insert="fragments :: common_head"></th:block>
 <link rel="stylesheet" th:href="@{/css/administrator/entity_form.css}">
 </head>
@@ -8,42 +8,49 @@
 <body>
     <div class="navigation">
         <a class="waves-effect waves-light btn-small left white-text purple darken-4"
-            th:href="@{/dashboard(role= 'admin',id= ${requesterId})}">Back</a>
+            th:href="@{/dashboard/manage/representatives(role= 'admin',requesterId = ${requesterId})}">Back</a>
     </div>
     <div class="container animate__animated animate__fadeIn vh-expand valign-wrapper">
         <div class="row purple darken-4 plumed">
-            <form th:action="@{/dashboard/new/administrator}" th:method="post" th:object="${admin}" class="col s12">
+            <form th:action="@{/dashboard/update/representative}" th:method="post" th:object="${representative}"
+                class="col s12">
                 <div class="row shrunked">
-                    <p class="center-align flow-text white-text">New Admin</p>
+                    <p class="center-align flow-text white-text">Edit Representative</p>
                 </div>
                 <div class="row" hidden="true">
                     <div class="input-field col s12">
-                        <input class="white-text" required=true type="text" th:value=${requesterId} th:name="addedById">
+                        <input class="white-text" required=true type="text" th:value=${representative.id} th:name="id">
+                    </div>
+                </div>
+                <div class="row" hidden="true">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="text" th:value=${requesterId}
+                            th:name="managedById">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label class="white-text" for="firstName">First name</label>
                         <input class="white-text" required=true minlength="2" maxlength="15" type="text" id="firstName"
-                            th:name="firstName">
+                            th:name="firstName" th:value="${representative.firstName}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label class="white-text" for="lastName">Last name</label>
                         <input class="white-text" required=true minlength="2" maxlength="15" type="text" id="lastName"
-                            th:name="lastName">
+                            th:name="lastName" th:value="${representative.lastName}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label class="white-text" for="username">Username</label>
                         <input class="white-text" required=true minlength="2" maxlength="30" type="text" id="username"
-                            th:name="username">
+                            th:name="username" th:value="${representative.username}">
                     </div>
                 </div>
 
-                <button type="submit" class="blue darken-2 right btn waves-effect waves-light"> Add Admin </button>
+                <button type="submit" class="blue darken-2 right btn waves-effect waves-light"> Update </button>
             </form>
         </div>
     </div>

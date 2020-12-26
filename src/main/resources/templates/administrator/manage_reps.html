@@ -12,9 +12,14 @@
         margin-top: 10rem;
     }
 
-    .container {
+    .valign-wrapper {
         min-height: 100vh;
         height: 100vh;
+    }
+
+    td {
+        padding-left: 2rem;
+        padding-right: 2rem;
     }
 </style>
 </head>
@@ -24,14 +29,14 @@
         <a class="waves-effect waves-light btn-small left white-text purple darken-4"
             th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Back</a>
     </div>
-    <div class="container animate__animated animate__fadeIn valign-wrapper">
+    <div class="animate__animated animate__fadeIn valign-wrapper">
         <div class="row">
             <div th:if=${representatives.empty} class="col s12">
                 <h2 class="center-align purple-text text-darken-4">No Representatives</h2>
             </div>
             <div th:unless=${representatives.empty} class="col s12">
-                <table class="highlight">
-                    <thead>
+                <table class="highlight z-depth-3">
+                    <thead class="purple darken-4 white-text gray-text text-lighten-2">
                         <tr>
                             <td>Id</td>
                             <td>Username</td>
@@ -47,9 +52,12 @@
                             <td th:text="${rep.username}"></td>
                             <td th:text="${rep.firstName}"></td>
                             <td th:text="${rep.lastName}"></td>
-                            <td><button class="waves-effect waves-light btn-small blue">Edit</button></td>
-                            <td><button
-                                    class="waves-effect waves-light btn-small red darken-3 deleteBTN">Delete</button>
+                            <td><a th:href="@{/dashboard/update/representative(requesterId = ${requesterId}, targetId = ${rep.id})}"
+                                    class="waves-effect waves-light btn-small btn-flat blue darken-3
+                                    white-text">Edit</a>
+                            </td>
+                            <td><a th:href="@{/dashboard/delete/representative(requesterId = ${requesterId}, targetId = ${rep.id})}"
+                                    class="waves-effect waves-light btn-small btn-flat red accent-4 deleteBTN white-text">Delete</a>
                             </td>
                         </tr>
                     </tbody>

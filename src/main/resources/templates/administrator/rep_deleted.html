@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
-<title>Added <th:block th:text=${entityName}></th:block>
+<title>Deleted Representative</th:block>
 </title>
 <th:block th:insert="fragments :: common_head"></th:block>
 <link rel="stylesheet" th:href="@{/css/administrator/common_style.css}">
@@ -16,12 +16,14 @@
                             <span class="card-title" th:text="${errorMessage}">Error</span>
                         </th:block>
                         <th:block th:unless="${isError}">
-                            <span class="card-title" th:text="|${'New '} ${entityName} ${' was added!'}|"></span>
-                            <p>The <span th:text="${entityName}"></span> with username <span
-                                    th:text="${username}"></span> was added successfully!</p>
+                            <span class="card-title">Representative was deleted!</span>
+                            <p>Representative with username <span th:text="${username}"></span> was deleted
+                                successfully!</p>
                         </th:block>
                     </div>
                     <div class="card-action">
+                        <a class="white-text"
+                            th:href="@{/dashboard/manage/representatives(requesterId= ${requesterId})}">Back</a>
                         <a class="white-text"
                             th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Dashboard</a>
                     </div>

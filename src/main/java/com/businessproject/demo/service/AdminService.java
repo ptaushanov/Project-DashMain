@@ -1,5 +1,7 @@
 package com.businessproject.demo.service;
+
 import com.businessproject.demo.exeption.AuthorizationException;
+import com.businessproject.demo.exeption.NonExistingEntityException;
 import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.Admin;
 import com.businessproject.demo.model.SalesRepresentative;
@@ -20,51 +22,39 @@ public class AdminService {
     private SalesRepRepository salesRepRepository;
 
 
-    public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException{
+    public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException {
 
-        if(!adminRepository.existsById(admin.getAddedById())){
+        if (!adminRepository.existsById(admin.getAddedById())) {
             throw new AuthorizationException();
         }
 
-        if(adminRepository.existsByUsername(admin.getUsername())){
+        if (adminRepository.existsByUsername(admin.getUsername())) {
             throw new UsernameAlreadyExists();
         }
 
         adminRepository.save(admin);
     }
 
-    public boolean existsAdminById(String id){
-        return  adminRepository.existsById(id);
+    public boolean existsAdminById(String id) {
+        return adminRepository.existsById(id);
     }
 
-    public  boolean existsAdminByUsername(String username){
+    public boolean existsAdminByUsername(String username) {
         return adminRepository.existsByUsername(username);
     }
 
-    public Admin getAdminById(String id) {
-        if(adminRepository.existsById(id)){
-            Optional<Admin> admin = adminRepository.findById(id);
-            if (admin.isPresent())
-            {
-                return admin.get();
-            }
+    public Admin getAdminById(String id) throws NonExistingEntityException {
+        Optional<Admin> admin = adminRepository.findById(id);
+        if (admin.isPresent()) {
+            return admin.get();
+        } else {
+            throw new NonExistingEntityException();
         }
-        else {
-            // TODO Return Error Bad Request
-        }
-
-        //TODO Remove later
-        return null;
-    }
-
-    //TEMPORARY
-    public List<Admin> getAdmins() {
-        return adminRepository.findAll();
     }
 
     public void saveRepresentative(SalesRepresentative rep) throws UsernameAlreadyExists, AuthorizationException {
 
-        if (!adminRepository.existsById(rep.getAddedById())) {
+        if (!adminRepository.existsById(rep.getManagedById())) {
             throw new AuthorizationException();
         }
 
@@ -76,10 +66,53 @@ public class AdminService {
     }
 
     public boolean existsRepresentativeById(String id) {
-        return  salesRepRepository.existsById(id);
+        return salesRepRepository.existsById(id);
     }
 
     public List<SalesRepresentative> getRepresentatives() {
         return salesRepRepository.findAll();
     }
+
+    public void deleteRepresentativeById(String id) throws NonExistingEntityException {
+        if (salesRepRepository.existsById(id)) {
+            salesRepRepository.deleteById(id);
+        } else {
+            throw new NonExistingEntityException();
+        }
+    }
+
+    public SalesRepresentative getRepresentativeById(String id) throws NonExistingEntityException {
+        Optional<SalesRepresentative> rep = salesRepRepository.findById(id);
+        if (rep.isPresent()) {
+            return rep.get();
+        } else {
+            throw new NonExistingEntityException();
+        }
+    }
+
+    public void updateRepresentative(SalesRepresentative rep) throws UsernameAlreadyExists, AuthorizationException, NonExistingEntityException {
+
+        if(rep.getId() == null)
+        {
+            System.err.println("rep id is null");
+        }
+
+        if (!adminRepository.existsById(rep.getManagedById())) {
+            throw new AuthorizationException();
+        }
+
+        if(!salesRepRepository.existsById(rep.getId())){
+            throw new NonExistingEntityException();
+        }
+
+        if (salesRepRepository.existsByUsername(rep.getUsername())) {
+            SalesRepresentative oldRep = salesRepRepository.findById(rep.getId()).get();
+            if(!oldRep.getUsername().equals(rep.getUsername())){
+                throw new UsernameAlreadyExists();
+            }
+        }
+
+        salesRepRepository.save(rep);
+    }
+
 }

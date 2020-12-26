@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 @Document(collection = "SalesReps")
 public class SalesRepresentative implements Entity{
     private String id;
-    private String addedById;
+    private String managedById;
 
     @NotNull(message = "First name was not provided!")
     @Size(min=2, max=15, message = "First name should be between 2 and 15 characters.")
@@ -55,11 +55,16 @@ public class SalesRepresentative implements Entity{
         this.username = username;
     }
 
-    public String getAddedById() {
-        return addedById;
+
+    public String getManagedById() {
+        return managedById;
     }
 
-    public void setAddedById(String addedById) {
-        this.addedById = addedById;
+    public void setManagedById(String managedById) {
+        this.managedById = managedById;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
