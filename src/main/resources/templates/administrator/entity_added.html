@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <div class="container valign-wrapper">
+    <div class="container animate__animated animate__fadeIn valign-wrapper">
         <div class="row">
             <div class="col s12">
                 <div class="card purple darken-4">
@@ -15,12 +15,14 @@
                             <span class="card-title" th:text="${errorMessage}">Error</span>
                         </th:block>
                         <th:block th:unless="${isError}">
-                            <span class="card-title">New admin was added</span>
-                            <p>Admin with username <span th:text="${username}"></span> was added successfully!</p>
+                            <span class="card-title" th:text="|${'New '} ${entityName} ${' was added!'}|"></span>
+                            <p>The <span th:text="${entityName}"></span> with username <span
+                                    th:text="${username}"></span> was added successfully!</p>
                         </th:block>
                     </div>
                     <div class="card-action">
-                        <a class="white-text" th:href="@{/dashboard(role='admin',id= ${requesterId})}">Dashboard</a>
+                        <a class="white-text"
+                            th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Dashboard</a>
                     </div>
                 </div>
             </div>

@@ -2,9 +2,15 @@
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
 <title>Dashboard Error</title>
 <th:block th:insert="fragments :: common_head"></th:block>
+<style>
+    .container {
+        min-height: 100vh;
+    }
+</style>
+</head>
 
 <body>
-    <div class="container valign-wrapper">
+    <div class="container animate__animated animate__fadeIn valign-wrapper">
         <div class="row">
             <div class="col s12">
                 <div class="card purple darken-4">
@@ -20,4 +26,3 @@
         </div>
     </div>
 </body>
-</head>

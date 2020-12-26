@@ -15,17 +15,20 @@
         <h4 th:text="|${entity.fullName} (${entity.username})|"></h4>
         <p th:text="${entity.id}"></p>
         <a th:href="@{/start/} + ${rolePath}" class="btn-small waves-effect waves-light pink darken-4">Switch</a>
-        <a th:href="@{/dashboard/new/{role}(role = ${rolePath}, requesterId=${entity.id})}"
-            class=" btn-small waves-effect waves-light amber darken-4">Add
-            New</a>
+        <th:block th:if="${rolePath == 'administrator'}">
+            <a th:href="@{/dashboard/new/administrator(requesterId=${entity.id})}"
+                class=" btn-small waves-effect waves-light amber darken-4">Add New</a>
+        </th:block>
     </div>
 </div>
 
 <div class="row" th:fragment="block_salesReps">
     <div class="col s12">
         <h5>Sales Representatives</h5>
-        <a class="btn-small waves-effect waves-light indigo darken-4">Manage</a>
-        <a class="btn-small waves-effect waves-light deep-purple accent-3">Add New</a>
+        <a th:href="@{/dashboard/manage/representatives(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light indigo darken-4">Manage</a>
+        <a th:href="@{/dashboard/new/representative(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light deep-purple accent-3">Add New</a>
     </div>
 </div>
 

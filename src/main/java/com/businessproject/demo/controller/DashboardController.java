@@ -1,6 +1,7 @@
 package com.businessproject.demo.controller;
 
 import com.businessproject.demo.exeption.InvalidRoleException;
+import com.businessproject.demo.exeption.NonExistingEntityException;
 import com.businessproject.demo.model.Entity;
 import com.businessproject.demo.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class DashboardController {
     public String getDashboardView(@RequestParam(value = "role", required = false) String role, @RequestParam(value = "id", required = false) String id,Model model){
 
         if(role == null || id == null){
+            model.addAttribute("errorMessage", "Not a valid request was provided for accessing the dashboard page!");
             return "dashboard/error_view";
         }
 
@@ -53,7 +55,7 @@ public class DashboardController {
             model.addAttribute("rolePath", dashboardService.getRole(role));
             return "dashboard/main_view";
 
-        } catch (InvalidRoleException exception) {
+        } catch (InvalidRoleException | NonExistingEntityException exception) {
             model.addAttribute("errorMessage", exception.getMessage());
             return "dashboard/error_view";
         }

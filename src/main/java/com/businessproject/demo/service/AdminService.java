@@ -2,7 +2,9 @@ package com.businessproject.demo.service;
 import com.businessproject.demo.exeption.AuthorizationException;
 import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.Admin;
+import com.businessproject.demo.model.SalesRepresentative;
 import com.businessproject.demo.repository.AdminRepository;
+import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private SalesRepRepository salesRepRepository;
 
 
     public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException{
@@ -55,5 +60,26 @@ public class AdminService {
     //TEMPORARY
     public List<Admin> getAdmins() {
         return adminRepository.findAll();
+    }
+
+    public void saveRepresentative(SalesRepresentative rep) throws UsernameAlreadyExists, AuthorizationException {
+
+        if (!adminRepository.existsById(rep.getAddedById())) {
+            throw new AuthorizationException();
+        }
+
+        if (salesRepRepository.existsByUsername(rep.getUsername())) {
+            throw new UsernameAlreadyExists();
+        }
+
+        salesRepRepository.save(rep);
+    }
+
+    public boolean existsRepresentativeById(String id) {
+        return  salesRepRepository.existsById(id);
+    }
+
+    public List<SalesRepresentative> getRepresentatives() {
+        return salesRepRepository.findAll();
     }
 }

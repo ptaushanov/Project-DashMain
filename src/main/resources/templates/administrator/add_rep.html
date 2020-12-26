@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
-<title>Add Admin</title>
+<title>Add Representative</title>
 <th:block th:insert="fragments :: common_head"></th:block>
 <link rel="stylesheet" th:href="@{/css/administrator/add_entity.css}">
 </head>
@@ -12,9 +12,10 @@
     </div>
     <div class="container animate__animated animate__fadeIn vh-expand valign-wrapper">
         <div class="row purple darken-4 plumed">
-            <form th:action="@{/dashboard/new/administrator}" th:method="post" th:object="${admin}" class="col s12">
+            <form th:action="@{/dashboard/new/representative}" th:method="post" th:object="${representative}"
+                class="col s12">
                 <div class="row shrunked">
-                    <p class="center-align flow-text white-text">New Admin</p>
+                    <p class="center-align flow-text white-text">New Representative</p>
                 </div>
                 <div class="row" hidden="true">
                     <div class="input-field col s12">
@@ -43,7 +44,8 @@
                     </div>
                 </div>
 
-                <button type="submit" class="blue darken-2 right btn waves-effect waves-light"> Add Admin </button>
+                <button type="submit" class="blue darken-2 right btn waves-effect waves-light"> Add Representative
+                </button>
             </form>
         </div>
     </div>

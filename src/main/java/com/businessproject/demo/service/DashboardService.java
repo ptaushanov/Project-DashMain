@@ -1,6 +1,7 @@
 package com.businessproject.demo.service;
 
 import com.businessproject.demo.exeption.InvalidRoleException;
+import com.businessproject.demo.exeption.NonExistingEntityException;
 import com.businessproject.demo.model.Admin;
 import com.businessproject.demo.model.Entity;
 import com.businessproject.demo.model.SalesRepresentative;
@@ -27,11 +28,14 @@ public class DashboardService {
     public  List<SalesRepresentative> getAllSalesReps(){
         return  salesRepRepository.findAll();
     }
-    public Entity getEntityInfo(String role, String id) throws InvalidRoleException {
+    public Entity getEntityInfo(String role, String id) throws InvalidRoleException, NonExistingEntityException {
         if(role.equals("admin")) {
             Optional<Admin> admin = adminRepository.findById(id);
             if (admin.isPresent()){
                 return admin.get();
+            }
+            else {
+                throw new NonExistingEntityException();
             }
         }
         else if(role.equals("salesRep")) {
@@ -39,16 +43,16 @@ public class DashboardService {
             if (salesRep.isPresent()){
                 return salesRep.get();
             }
+            else{
+                throw new NonExistingEntityException();
+            }
         }
         else {
             throw new InvalidRoleException();
         }
-
-        // TODO: Remove
-        return null;
     }
 
-    public String getRole(String role) {
+    public String getRole(String role) throws NonExistingEntityException {
         if(role.equals("admin")){
             return "administrator";
         }
@@ -56,10 +60,7 @@ public class DashboardService {
             return  "representative";
         }
         else {
-            // TODO: Custom error
+            throw new NonExistingEntityException();
         }
-
-        //TODO: Remove
-        return null;
     }
 }

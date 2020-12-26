@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Manage Representatives</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<style>
+    .navigation {
+        position: absolute;
+        padding: 1rem;
+    }
+
+    .mt-10 {
+        margin-top: 10rem;
+    }
+
+    .container {
+        min-height: 100vh;
+        height: 100vh;
+    }
+</style>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Back</a>
+    </div>
+    <div class="container animate__animated animate__fadeIn valign-wrapper">
+        <div class="row">
+            <div th:if=${representatives.empty} class="col s12">
+                <h2 class="center-align purple-text text-darken-4">No Representatives</h2>
+            </div>
+            <div th:unless=${representatives.empty} class="col s12">
+                <table class="highlight">
+                    <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Username</td>
+                            <td>First name</td>
+                            <td>Last name</td>
+                            <td>Edit</td>
+                            <td>Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="rep: ${representatives}">
+                            <td th:text="${rep.id}"></td>
+                            <td th:text="${rep.username}"></td>
+                            <td th:text="${rep.firstName}"></td>
+                            <td th:text="${rep.lastName}"></td>
+                            <td><button class="waves-effect waves-light btn-small blue">Edit</button></td>
+                            <td><button
+                                    class="waves-effect waves-light btn-small red darken-3 deleteBTN">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
