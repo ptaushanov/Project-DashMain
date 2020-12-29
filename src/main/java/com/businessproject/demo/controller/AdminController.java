@@ -2,8 +2,10 @@ package com.businessproject.demo.controller;
 
 import com.businessproject.demo.exeption.AuthorizationException;
 import com.businessproject.demo.exeption.NonExistingEntityException;
+import com.businessproject.demo.exeption.NonExistingProductException;
 import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.Admin;
+import com.businessproject.demo.model.Product;
 import com.businessproject.demo.model.SalesRepresentative;
 import com.businessproject.demo.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +69,7 @@ public class AdminController {
                 model.addAttribute("representative", adminService.getRepresentativeById(targetId));
             } catch (NonExistingEntityException exception) {
                 model.addAttribute("errorMessage", "Requested a non existing representative.");
+                return "administrator/invalid_request";
             }
 
             return "administrator/update_rep";
@@ -92,6 +95,67 @@ public class AdminController {
             return "administrator/rep_deleted";
         }
         model.addAttribute("errorMessage", "Request from an unauthorized source are forbidden!");
+        return "administrator/invalid_request";
+    }
+
+    @GetMapping("/new/product")
+    public String getProductAddView(@RequestParam("requesterId") String requesterId, Model model){
+        if (adminService.existsAdminById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            return "administrator/add_product";
+        }
+        return "administrator/invalid_request";
+    }
+
+    @GetMapping("/update/product")
+    public String getEditProductView(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
+        // TODO make request param optional
+
+        if (adminService.existsAdminById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            try {
+                model.addAttribute("product", adminService.getProductsById(targetId));
+            } catch (NonExistingProductException exception) {
+                model.addAttribute("errorMessage", "Requested a non existing product.");
+                return "administrator/invalid_request";
+            }
+            return "administrator/update_product";
+        }
+        model.addAttribute("errorMessage", "Request from an unauthorized sources are forbidden!");
+        return "administrator/invalid_request";
+    }
+
+    @GetMapping("/delete/product")
+    public String deleteProduct(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
+        if (adminService.existsAdminById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            try {
+                String targetUsername = adminService.getProductsById(targetId).getProductName();
+                adminService.deleteProductById(targetId);
+
+                model.addAttribute("productName", targetUsername);
+                model.addAttribute("isError", false);
+            } catch (NonExistingProductException exception) {
+                model.addAttribute("isError", true);
+                model.addAttribute("errorMessage", exception.getMessage());
+            }
+            return "administrator/product_deleted";
+        }
+        model.addAttribute("errorMessage", "Request from an unauthorized source are forbidden!");
+        return "administrator/invalid_request";
+    }
+
+    @GetMapping("/manage/products")
+    public String getProductManageView(@RequestParam("requesterId") String requesterId, Model model) {
+        // TODO make request param optional
+
+        if (adminService.existsAdminById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            model.addAttribute("products", adminService.getProducts());
+
+            return "administrator/manage_products";
+        }
+        model.addAttribute("errorMessage", "Request from an unauthorized sources are forbidden!");
         return "administrator/invalid_request";
     }
 
@@ -168,6 +232,21 @@ public class AdminController {
             mav.addObject("errorMessage", exception.getMessage());
         }
 
+        return mav;
+    }
+
+    @PostMapping("/new/product")
+    public ModelAndView addProduct(@Valid @ModelAttribute("product") Product product) {
+
+        ModelAndView mav = new ModelAndView("administrator/product_added");
+        try {
+            adminService.saveProduct(product);
+            mav.addObject("productName", product.getProductName());
+            mav.addObject("requesterId", product.getManagedById());
+        } catch (AuthorizationException authorizationException) {
+            mav = new ModelAndView("administrator/invalid_request");
+            mav.addObject("errorMessage", authorizationException.getMessage());
+        }
         return mav;
     }
 }

@@ -2,10 +2,13 @@ package com.businessproject.demo.service;
 
 import com.businessproject.demo.exeption.AuthorizationException;
 import com.businessproject.demo.exeption.NonExistingEntityException;
+import com.businessproject.demo.exeption.NonExistingProductException;
 import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.Admin;
+import com.businessproject.demo.model.Product;
 import com.businessproject.demo.model.SalesRepresentative;
 import com.businessproject.demo.repository.AdminRepository;
+import com.businessproject.demo.repository.ProductRepository;
 import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class AdminService {
     @Autowired
     private SalesRepRepository salesRepRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
 
     public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException {
 
@@ -35,23 +41,6 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-    public boolean existsAdminById(String id) {
-        return adminRepository.existsById(id);
-    }
-
-    public boolean existsAdminByUsername(String username) {
-        return adminRepository.existsByUsername(username);
-    }
-
-    public Admin getAdminById(String id) throws NonExistingEntityException {
-        Optional<Admin> admin = adminRepository.findById(id);
-        if (admin.isPresent()) {
-            return admin.get();
-        } else {
-            throw new NonExistingEntityException();
-        }
-    }
-
     public void saveRepresentative(SalesRepresentative rep) throws UsernameAlreadyExists, AuthorizationException {
 
         if (!adminRepository.existsById(rep.getManagedById())) {
@@ -63,6 +52,30 @@ public class AdminService {
         }
 
         salesRepRepository.save(rep);
+    }
+
+    public void saveProduct(Product product) throws AuthorizationException {
+
+        if (!adminRepository.existsById(product.getManagedById())) {
+            throw new AuthorizationException();
+        }
+        productRepository.save(product);
+    }
+
+    public boolean existsAdminById(String id) {
+        return adminRepository.existsById(id);
+    }
+    public boolean existsAdminByUsername(String username) {
+        return adminRepository.existsByUsername(username);
+    }
+
+    public Admin getAdminById(String id) throws NonExistingEntityException {
+        Optional<Admin> admin = adminRepository.findById(id);
+        if (admin.isPresent()) {
+            return admin.get();
+        } else {
+            throw new NonExistingEntityException();
+        }
     }
 
     public boolean existsRepresentativeById(String id) {
@@ -115,4 +128,24 @@ public class AdminService {
         salesRepRepository.save(rep);
     }
 
+    public List<Product> getProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product getProductsById(String id) throws NonExistingProductException {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            return product.get();
+        } else {
+            throw new NonExistingProductException();
+        }
+    }
+
+    public void deleteProductById(String id) throws NonExistingProductException {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        } else {
+            throw new NonExistingProductException();
+        }
+    }
 }

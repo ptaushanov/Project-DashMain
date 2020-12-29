@@ -35,8 +35,10 @@
 <div class="row" th:fragment="block_manageProducts">
     <div class="col s12">
         <h5>Products</h5>
-        <a class="btn-small waves-effect waves-light pink darken-2 ">Manage</a>
-        <a class="btn-small waves-effect waves-light  deep-orange">Add New</a>
+        <a th:href="@{/dashboard/manage/products(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light pink darken-2 ">Manage</a>
+        <a th:href="@{/dashboard/new/product(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light  deep-orange">Add New</a>
     </div>
 </div>
 

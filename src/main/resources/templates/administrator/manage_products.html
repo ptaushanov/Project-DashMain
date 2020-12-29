@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Manage Products</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<style>
+    .navigation {
+        position: absolute;
+        padding: 1rem;
+    }
+
+    .mt-10 {
+        margin-top: 10rem;
+    }
+
+    .valign-wrapper {
+        min-height: 100vh;
+        height: 100vh;
+    }
+
+    td {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+</style>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Back</a>
+    </div>
+    <div class="animate__animated animate__fadeIn valign-wrapper">
+        <div class="row">
+            <div th:if=${products.empty} class="col s12">
+                <h2 class="center-align purple-text text-darken-4">No Products</h2>
+            </div>
+            <div th:unless=${products.empty} class="col s12">
+                <table class="highlight z-depth-3">
+                    <thead class="purple darken-4 white-text gray-text text-lighten-2">
+                        <tr>
+                            <td>Id</td>
+                            <td>Product Name</td>
+                            <td>Category</td>
+                            <td>Description</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Edit</td>
+                            <td>Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product: ${products}">
+                            <td th:text="${product.id}"></td>
+                            <td th:text="${product.productName}"></td>
+                            <td th:text="${product.category}"></td>
+                            <td th:text="${product.description}"></td>
+                            <td th:text="${product.price}"></td>
+                            <td th:text="${product.quantity}"></td>
+                            <td><a th:href="@{/dashboard/update/product(requesterId = ${requesterId}, targetId = ${product.id})}"
+                                    class="waves-effect waves-light btn-small btn-flat blue darken-3
+                                    white-text">Edit</a>
+                            </td>
+                            <td><a th:href="@{/dashboard/delete/product(requesterId = ${requesterId}, targetId = ${product.id})}"
+                                    class="waves-effect waves-light btn-small btn-flat red accent-4 deleteBTN white-text">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

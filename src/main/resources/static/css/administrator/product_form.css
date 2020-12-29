@@ -1,0 +1,49 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+html {
+    line-height: 1 !important;
+}
+
+.vh-expand {
+    min-height: 100vh;
+}
+
+.navigation {
+    position: absolute;
+    padding: 1rem;
+}
+
+.plumed {
+    padding: 2rem;
+}
+
+.shrunked {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+form {
+    min-width: 26rem;
+}
+
+.dropdown-trigger {
+    color: whitesmoke;
+}
+
+.dropdown-content {
+    background-color: aliceblue !important;
+}
+
+li span {
+    color: #4a148c !important;
+}

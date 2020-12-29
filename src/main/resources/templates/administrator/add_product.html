@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Add Product</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<link rel="stylesheet" th:href="@{/css/administrator/product_form.css}">
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    });
+</script>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard(role= 'admin',id= ${requesterId})}">Back</a>
+    </div>
+    <div class="container animate__animated animate__fadeIn vh-expand valign-wrapper">
+        <div class="row purple darken-4 plumed">
+            <form th:action="@{/dashboard/new/product}" th:method="post" th:object="${product}" class="col s12">
+                <div class="row shrunked">
+                    <p class="center-align flow-text white-text">New Product</p>
+                </div>
+                <div class="row" hidden="true">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="text" th:value=${requesterId}
+                            th:name="managedById">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label class="white-text" for="pName">Product name</label>
+                        <input class="white-text" required=true minlength="2" maxlength="60" type="text" id="pName"
+                            th:name="productName">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select th:name="category" class="white-text" required>
+                            <option class="white-text" th:value="Uncategorized" disabled selected>Choose your option
+                            </option>
+                            <option th:value="${'TV, Video and Gaming'}">TV, Video and Gaming</option>
+                            <option th:value="${'Smartphones and Tablets'}">Smartphones and Tablets</option>
+                            <option th:value="${'Photo and video cameras'}">Photo and video cameras</option>
+                            <option th:value="${'Computers and peripherals'}">Computers and peripherals</option>
+                            <option th:value="${'Computer accessories'}">Computer accessories</option>
+                            <option th:value="${'Small appliances'}">Small appliances</option>
+                        </select>
+                        <label class="white-text">Category Select</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label class="white-text" for="description">Description</label>
+                        <textarea class="white-text materialize-textarea" required=true maxlength="250" id="description"
+                            th:name="description"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <label class="white-text" for="price">Price</label>
+                        <input class="white-text" required=true min="0.01" step="0.01" type="number" id="price"
+                            th:name="price">
+                    </div>
+                    <div class="input-field col s6">
+                        <label class="white-text" for="quantity">Quantity</label>
+                        <input class="white-text" required=true min="0" step="1" type="number" id="quantity"
+                            th:name="quantity">
+                    </div>
+                </div>
+                <button type="submit" class="blue darken-2 right btn waves-effect waves-light">Add Product</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

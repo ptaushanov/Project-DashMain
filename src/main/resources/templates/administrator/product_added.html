@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Added Product</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<link rel="stylesheet" th:href="@{/css/administrator/common_style.css}">
+</head>
+
+<body>
+    <div class="container animate__animated animate__fadeIn valign-wrapper">
+        <div class="row">
+            <div class="col s12">
+                <div class="card purple darken-4">
+                    <div class="card-content white-text">
+                        <span class="card-title">New product was added!</span>
+                        <p>The product <span th:text="${productName}"></span> was added successfully!</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text"
+                            th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
