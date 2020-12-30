@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -99,7 +100,7 @@ public class AdminController {
     }
 
     @GetMapping("/new/product")
-    public String getProductAddView(@RequestParam("requesterId") String requesterId, Model model){
+    public String getProductAddView(@RequestParam("requesterId") String requesterId, Model model) {
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             return "administrator/add_product";
@@ -195,8 +196,6 @@ public class AdminController {
             mav.addObject("username", rep.getUsername());
             mav.addObject("entityName", "representative");
             mav.addObject("requesterId", rep.getManagedById());
-
-
         } catch (UsernameAlreadyExists usernameAlreadyExists) {
             mav.addObject("isError", true);
             mav.addObject("errorMessage", usernameAlreadyExists.getMessage());
@@ -211,28 +210,24 @@ public class AdminController {
     }
 
     @PostMapping("/update/representative")
-    public ModelAndView updateRepresentative(@Valid @ModelAttribute("representative") SalesRepresentative rep) {
-
-        ModelAndView mav = new ModelAndView("administrator/rep_updated");
+    public String updateRepresentative(@Valid @ModelAttribute("representative") SalesRepresentative rep, Model model) {
         try {
             adminService.updateRepresentative(rep);
-            mav.addObject("isError", false);
-            mav.addObject("requesterId", rep.getManagedById());
-
-        } catch (UsernameAlreadyExists usernameAlreadyExists) {
-            mav.addObject("isError", true);
-            mav.addObject("errorMessage", usernameAlreadyExists.getMessage());
-            mav.addObject("requesterId", rep.getManagedById());
-
-        } catch (NonExistingEntityException exception) {
-            mav.addObject("isError", true);
-            mav.addObject("errorMessage", exception.getMessage());
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("requesterId", rep.getManagedById());
+            }});
+        } catch (UsernameAlreadyExists | NonExistingEntityException exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", rep.getManagedById());
+            }});
         } catch (AuthorizationException exception) {
-            mav = new ModelAndView("administrator/invalid_request");
-            mav.addObject("errorMessage", exception.getMessage());
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "administrator/invalid_request";
         }
-
-        return mav;
+        return "administrator/rep_updated";
     }
 
     @PostMapping("/new/product")
@@ -248,5 +243,26 @@ public class AdminController {
             mav.addObject("errorMessage", authorizationException.getMessage());
         }
         return mav;
+    }
+
+    @PostMapping("/update/product")
+    public String updateProduct(@Valid @ModelAttribute("product") Product product, Model model) {
+        try {
+            adminService.updateProduct(product);
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("requesterId", product.getManagedById());
+            }});
+        } catch (NonExistingProductException exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", product.getManagedById());
+            }});
+        } catch (AuthorizationException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "administrator/invalid_request";
+        }
+        return "administrator/product_updated";
     }
 }
