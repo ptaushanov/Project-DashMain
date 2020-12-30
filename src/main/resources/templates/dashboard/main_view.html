@@ -14,10 +14,12 @@
 
         <th:block th:if="${rolePath == 'administrator'}">
             <th:block th:insert="fragments :: block_salesReps"></th:block>
+            <th:block th:insert="fragments :: block_manageProducts"></th:block>
         </th:block>
 
-        <th:block th:if="${rolePath == 'administrator'}">
-            <th:block th:insert="fragments :: block_manageProducts"></th:block>
+        <th:block th:if="${rolePath == 'representative'}">
+            <th:block th:insert="fragments :: block_manageCustomers"></th:block>
+            <th:block th:insert="fragments :: block_operateProducts"></th:block>
         </th:block>
     </div>
 </body>

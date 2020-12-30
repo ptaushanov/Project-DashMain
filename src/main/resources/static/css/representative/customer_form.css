@@ -1,0 +1,21 @@
+.vh-expand {
+    min-height: 100vh;
+}
+
+.navigation {
+    position: absolute;
+    padding: 1rem;
+}
+
+.plumed {
+    padding: 2rem 3rem;
+}
+
+.shrunked {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+form {
+    min-width: 20rem;
+}

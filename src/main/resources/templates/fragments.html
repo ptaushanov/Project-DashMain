@@ -42,5 +42,24 @@
     </div>
 </div>
 
+<div class="row" th:fragment="block_manageCustomers">
+    <div class="col s12">
+        <h5>Customers</h5>
+        <a th:href="@{/dashboard/manage/customers(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light indigo darken-4">Manage</a>
+        <a th:href="@{/dashboard/new/customer(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light deep-purple accent-3">Add New</a>
+    </div>
+</div>
+
+<div class="row" th:fragment="block_operateProducts">
+    <div class="col s12">
+        <h5>Products</h5>
+        <a th:href="@{/dashboard/promotion/products(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light pink darken-2 ">Promotions</a>
+        <a th:href="@{/dashboard/sell/product(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light  deep-orange">Sell</a>
+    </div>
+</div>
 
 </html>
