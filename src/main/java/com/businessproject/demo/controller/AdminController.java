@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -149,7 +148,6 @@ public class AdminController {
     @GetMapping("/manage/products")
     public String getProductManageView(@RequestParam("requesterId") String requesterId, Model model) {
         // TODO make request param optional
-
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             model.addAttribute("products", adminService.getProducts());
@@ -161,52 +159,50 @@ public class AdminController {
     }
 
     @PostMapping("/new/administrator")
-    // TODO make request param optional
-
-    public ModelAndView addAdmin(@Valid @ModelAttribute("admin") Admin admin) {
-
-        ModelAndView mav = new ModelAndView("administrator/entity_added");
+    public String addAdmin(@Valid @ModelAttribute("admin") Admin admin, Model model) {
+        // TODO make request param optional
         try {
             adminService.saveAdmin(admin);
-
-            mav.addObject("username", admin.getUsername());
-            mav.addObject("entityName", "admin");
-            mav.addObject("requesterId", admin.getAddedById());
-            mav.addObject("isError", false);
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("username", admin.getUsername());
+                put("entityName", "admin");
+                put("requesterId", admin.getAddedById());
+            }});
         } catch (UsernameAlreadyExists exception) {
-            mav.addObject("isError", true);
-            mav.addObject("errorMessage", exception.getMessage());
-            mav.addObject("requesterId", admin.getAddedById());
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", admin.getAddedById());
+            }});
         } catch (AuthorizationException exception) {
-            mav = new ModelAndView("administrator/invalid_request");
-            mav.addObject("errorMessage", exception.getMessage());
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "administrator/invalid_request";
         }
-
-        return mav;
+        return "administrator/entity_added";
     }
 
     @PostMapping("/new/representative")
-    public ModelAndView addRepresentative(@Valid @ModelAttribute("representative") SalesRepresentative rep) {
-
-        ModelAndView mav = new ModelAndView("administrator/entity_added");
+    public String addRepresentative(@Valid @ModelAttribute("representative") SalesRepresentative rep, Model model) {
         try {
             adminService.saveRepresentative(rep);
-            mav.addObject("isError", false);
-
-            mav.addObject("username", rep.getUsername());
-            mav.addObject("entityName", "representative");
-            mav.addObject("requesterId", rep.getManagedById());
-        } catch (UsernameAlreadyExists usernameAlreadyExists) {
-            mav.addObject("isError", true);
-            mav.addObject("errorMessage", usernameAlreadyExists.getMessage());
-            mav.addObject("requesterId", rep.getManagedById());
-
-        } catch (AuthorizationException authorizationException) {
-            mav = new ModelAndView("administrator/invalid_request");
-            mav.addObject("errorMessage", authorizationException.getMessage());
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("username", rep.getUsername());
+                put("entityName", "representative");
+                put("requesterId", rep.getManagedById());
+            }});
+        } catch (UsernameAlreadyExists exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", rep.getManagedById());
+            }});
+        } catch (AuthorizationException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "administrator/invalid_request";
         }
-
-        return mav;
+        return "administrator/entity_added";
     }
 
     @PostMapping("/update/representative")
@@ -231,18 +227,18 @@ public class AdminController {
     }
 
     @PostMapping("/new/product")
-    public ModelAndView addProduct(@Valid @ModelAttribute("product") Product product) {
-
-        ModelAndView mav = new ModelAndView("administrator/product_added");
+    public String addProduct(@Valid @ModelAttribute("product") Product product, Model model) {
         try {
             adminService.saveProduct(product);
-            mav.addObject("productName", product.getProductName());
-            mav.addObject("requesterId", product.getManagedById());
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("productName", product.getProductName());
+                put("requesterId", product.getManagedById());
+            }});
         } catch (AuthorizationException authorizationException) {
-            mav = new ModelAndView("administrator/invalid_request");
-            mav.addObject("errorMessage", authorizationException.getMessage());
+            model.addAttribute("errorMessage", authorizationException.getMessage());
+            return "administrator/invalid_request";
         }
-        return mav;
+        return "administrator/product_added";
     }
 
     @PostMapping("/update/product")

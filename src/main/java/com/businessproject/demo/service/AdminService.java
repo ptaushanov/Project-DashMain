@@ -20,42 +20,33 @@ import java.util.Optional;
 public class AdminService {
     @Autowired
     private AdminRepository adminRepository;
-
     @Autowired
     private SalesRepRepository salesRepRepository;
-
     @Autowired
     private ProductRepository productRepository;
 
 
     public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException {
-
         if (!adminRepository.existsById(admin.getAddedById())) {
             throw new AuthorizationException();
         }
-
         if (adminRepository.existsByUsername(admin.getUsername())) {
             throw new UsernameAlreadyExists();
         }
-
         adminRepository.save(admin);
     }
 
     public void saveRepresentative(SalesRepresentative rep) throws UsernameAlreadyExists, AuthorizationException {
-
         if (!adminRepository.existsById(rep.getManagedById())) {
             throw new AuthorizationException();
         }
-
         if (salesRepRepository.existsByUsername(rep.getUsername())) {
             throw new UsernameAlreadyExists();
         }
-
         salesRepRepository.save(rep);
     }
 
     public void saveProduct(Product product) throws AuthorizationException {
-
         if (!adminRepository.existsById(product.getManagedById())) {
             throw new AuthorizationException();
         }
@@ -64,23 +55,6 @@ public class AdminService {
 
     public boolean existsAdminById(String id) {
         return adminRepository.existsById(id);
-    }
-
-    public boolean existsAdminByUsername(String username) {
-        return adminRepository.existsByUsername(username);
-    }
-
-    public Admin getAdminById(String id) throws NonExistingEntityException {
-        Optional<Admin> admin = adminRepository.findById(id);
-        if (admin.isPresent()) {
-            return admin.get();
-        } else {
-            throw new NonExistingEntityException();
-        }
-    }
-
-    public boolean existsRepresentativeById(String id) {
-        return salesRepRepository.existsById(id);
     }
 
     public List<SalesRepresentative> getRepresentatives() {
