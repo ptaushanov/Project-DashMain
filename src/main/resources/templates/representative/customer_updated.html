@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
-<title>Updated Representative</title>
+<title>Updated Customer</title>
 <th:block th:insert="fragments :: common_head"></th:block>
-<link rel="stylesheet" th:href="@{/css/administrator/common_style.css}">
+<link rel="stylesheet" th:href="@{/css/representative/common_style.css}">
 </head>
 
 <body>
@@ -15,15 +15,15 @@
                             <span class="card-title" th:text="${errorMessage}">Error</span>
                         </th:block>
                         <th:block th:unless="${isError}">
-                            <span class="card-title">Representative was updated!</span>
-                            <p>Update on the representative was performed successfully!</p>
+                            <span class="card-title">Customer was updated!</span>
+                            <p>Update on the customer was performed successfully!</p>
                         </th:block>
                     </div>
                     <div class="card-action">
                         <a class="white-text"
-                            th:href="@{/dashboard/manage/representatives(requesterId= ${requesterId})}">Back</a>
+                            th:href="@{/dashboard/manage/customers(requesterId= ${requesterId})}">Back</a>
                         <a class="white-text"
-                            th:href="@{/dashboard(role= ${'admin'}, id= ${requesterId})}">Dashboard</a>
+                            th:href="@{/dashboard(role= ${'salesRep'}, id= ${requesterId})}">Dashboard</a>
                     </div>
                 </div>
             </div>

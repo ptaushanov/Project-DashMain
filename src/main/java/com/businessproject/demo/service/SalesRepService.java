@@ -54,4 +54,20 @@ public class SalesRepService {
             throw new NonExistingCustomerException();
         }
     }
+
+    public void updateCustomer(Customer customer) throws NonExistingCustomerException, AuthorizationException, PhoneNumberAlreadyExists {
+        if (!customerRepository.existsById(customer.getId())) {
+            throw new NonExistingCustomerException();
+        }
+        if (!salesRepRepository.existsById(customer.getManagedById())) {
+            throw new AuthorizationException();
+        }
+        if (customerRepository.existsByPhoneNumber(customer.getPhoneNumber())) {
+            Customer oldCustomer = customerRepository.findById(customer.getId()).get();
+            if (!oldCustomer.getPhoneNumber().equals(customer.getPhoneNumber())) {
+                throw new PhoneNumberAlreadyExists();
+            }
+        }
+        customerRepository.save(customer);
+    }
 }

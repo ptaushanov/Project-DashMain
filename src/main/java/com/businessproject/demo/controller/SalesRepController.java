@@ -42,6 +42,25 @@ public class SalesRepController {
         return "representative/invalid_request";
     }
 
+    @GetMapping("/update/customer")
+    public String getEditRepresentativeView(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
+        // TODO make request param optional
+
+        if (salesRepService.existsSalesRepById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            try {
+                model.addAttribute("customer", salesRepService.getCustomerById(targetId));
+            } catch (NonExistingCustomerException exception) {
+                model.addAttribute("errorMessage", "Requested a non existing customer.");
+                return "representative/invalid_request";
+            }
+
+            return "representative/update_customer";
+        }
+        model.addAttribute("errorMessage", "Request from an unauthorized sources are forbidden!");
+        return "representative/invalid_request";
+    }
+
     @GetMapping("/delete/customer")
     public String deleteCustomer(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
         if (salesRepService.existsSalesRepById(requesterId)) {
@@ -82,5 +101,26 @@ public class SalesRepController {
             return "representative/invalid_request";
         }
         return "representative/customer_added";
+    }
+
+    @PostMapping("/update/customer")
+    public String updateCustomer(@Valid @ModelAttribute("customer") Customer customer, Model model) {
+        try {
+            salesRepService.updateCustomer(customer);
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("requesterId", customer.getManagedById());
+            }});
+        } catch (PhoneNumberAlreadyExists | NonExistingCustomerException exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", customer.getManagedById());
+            }});
+        } catch (AuthorizationException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "representative/invalid_request";
+        }
+        return "representative/customer_updated";
     }
 }
