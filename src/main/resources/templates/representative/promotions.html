@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Promotions</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<style>
+    .navigation {
+        position: absolute;
+        padding: 1rem;
+    }
+
+    .mt-10 {
+        margin-top: 10rem;
+    }
+
+    .valign-wrapper {
+        min-height: 100vh;
+        height: 100vh;
+    }
+
+    td {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    table {
+        margin: 4rem auto;
+    }
+</style>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard(role= ${'salesRep'}, id= ${requesterId})}">Back</a>
+    </div>
+    <div class="container valign-wrapper animate__animated animate__fadeIn">
+        <div class="row">
+            <div th:if=${promoEvents.empty} class="col s12">
+                <h2 class="center-align purple-text text-darken-4">No active promotions</h2>
+            </div>
+            <div th:unless=${promoEvents.empty} class="col s12">
+                <table class="highlight z-depth-3">
+                    <thead class="purple darken-4 white-text gray-text text-lighten-2">
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Promo Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="event: ${promoEvents}">
+                            <td th:text="${event.startDate}"></td>
+                            <td th:text="${event.endDate}"></td>
+                            <td th:text="${event.product.productName}"></td>
+                            <td th:text="${event.product.price}"></td>
+                            <td th:text="${event.promoPrice}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col s12">
+                <table class="highlight z-depth-3">
+                    <thead class="purple darken-4 white-text gray-text text-lighten-2">
+                        <tr>
+                            <td>Product Name</td>
+                            <td>Category</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Create promotion</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="product: ${nonPromoProducts}">
+                            <td th:text="${product.productName}"></td>
+                            <td th:text="${product.category}"></td>
+                            <td th:text="${product.price}"></td>
+                            <td th:text="${product.quantity}"></td>
+                            <td>
+                                <a th:href="@{/dashboard/new/promotion(requesterId = ${requesterId}, targetId = ${product.id})}"
+                                    class="waves-effect waves-light btn-small btn-flat pink darken-3
+                                    white-text">Create</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

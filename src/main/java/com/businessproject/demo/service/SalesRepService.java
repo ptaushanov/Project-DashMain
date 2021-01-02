@@ -4,21 +4,29 @@ import com.businessproject.demo.exeption.AuthorizationException;
 import com.businessproject.demo.exeption.NonExistingCustomerException;
 import com.businessproject.demo.exeption.PhoneNumberAlreadyExists;
 import com.businessproject.demo.model.Customer;
+import com.businessproject.demo.model.Product;
+import com.businessproject.demo.model.PromoEvent;
 import com.businessproject.demo.repository.CustomerRepository;
+import com.businessproject.demo.repository.ProductRepository;
+import com.businessproject.demo.repository.PromoRepository;
 import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SalesRepService {
     @Autowired
     private CustomerRepository customerRepository;
-
     @Autowired
     private SalesRepRepository salesRepRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private PromoRepository promoRepository;
 
     public boolean existsSalesRepById(String id) {
         return salesRepRepository.existsById(id);
@@ -69,5 +77,29 @@ public class SalesRepService {
             }
         }
         customerRepository.save(customer);
+    }
+
+    public List<PromoEvent> getPromoEvents() {
+        return promoRepository.findAll();
+    }
+
+    public List<Product> getNonPromoProducts() {
+        // The RAM eater
+
+        List<Product> promoProducts = promoRepository
+                .findAll()
+                .stream()
+                .map(PromoEvent::getProduct)
+                .collect(Collectors.toList());
+
+        return productRepository
+                .findAll()
+                .stream()
+                .filter(product -> !promoProducts.contains(product))
+                .collect(Collectors.toList());
+    }
+
+    public void savePromoEvent(PromoEvent promoEvent) {
+        
     }
 }

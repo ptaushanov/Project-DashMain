@@ -2,8 +2,12 @@ package com.businessproject.demo.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Document(collection = "Products")
 public class Product {
@@ -11,15 +15,15 @@ public class Product {
     private String managedById;
 
     @NotNull(message = "Product name was not provided!")
-    @Size(min=2, max=60, message = "Product name should be between 2 and 60 characters.")
+    @Size(min = 2, max = 60, message = "Product name should be between 2 and 60 characters.")
     private String productName;
 
     @NotNull(message = "Category was not provided!")
-    @Size(min=2, max=100, message = "Category should be between 2 and 100 characters.")
+    @Size(min = 2, max = 100, message = "Category should be between 2 and 100 characters.")
     private String category;
 
     @NotNull(message = "Description was not provided!")
-    @Size(max=250, message = "Description should not above 250 characters.")
+    @Size(max = 250, message = "Description should not above 250 characters.")
     private String description;
 
     @NotNull(message = "Price was not provided!")
@@ -84,5 +88,18 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

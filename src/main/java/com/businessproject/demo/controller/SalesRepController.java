@@ -81,6 +81,19 @@ public class SalesRepController {
         return "representative/invalid_request";
     }
 
+    @GetMapping("promotion/products")
+    public String getPromoProductView(@RequestParam("requesterId") String requesterId, Model model) {
+        if (salesRepService.existsSalesRepById(requesterId)) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("requesterId", requesterId);
+                put("promoEvents", salesRepService.getPromoEvents());
+                put("nonPromoProducts", salesRepService.getNonPromoProducts());
+            }});
+            return "representative/promotions";
+        }
+        return "representative/invalid_request";
+    }
+
     @PostMapping("/new/customer")
     public String addRepresentative(@Valid @ModelAttribute("product") Customer customer, Model model) {
         try {
@@ -123,4 +136,26 @@ public class SalesRepController {
         }
         return "representative/customer_updated";
     }
+
+//    @PostMapping("/new/promotion")
+//    public String addPromoEvent(@Valid @ModelAttribute("promoEvent") PromoEvent promoEvent, Model model) {
+//        try {
+//            salesRepService.savePromoEvent(promoEvent);
+//            model.addAllAttributes(new HashMap<String, Object>() {{
+//                put("isError", false);
+//                put("fullName", customer.getFullName());
+//                put("requesterId", customer.getManagedById());
+//            }});
+//        } catch (PhoneNumberAlreadyExists exception) {
+//            model.addAllAttributes(new HashMap<String, Object>() {{
+//                put("isError", true);
+//                put("errorMessage", exception.getMessage());
+//                put("requesterId", customer.getManagedById());
+//            }});
+//        } catch (AuthorizationException exception) {
+//            model.addAttribute("errorMessage", exception.getMessage());
+//            return "representative/invalid_request";
+//        }
+//        return "representative/customer_added";
+//    }
 }
