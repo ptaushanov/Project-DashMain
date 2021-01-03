@@ -6,6 +6,7 @@ import com.businessproject.demo.exeption.PhoneNumberAlreadyExists;
 import com.businessproject.demo.model.Customer;
 import com.businessproject.demo.model.Product;
 import com.businessproject.demo.model.PromoEvent;
+import com.businessproject.demo.model.PromoInfo;
 import com.businessproject.demo.repository.CustomerRepository;
 import com.businessproject.demo.repository.ProductRepository;
 import com.businessproject.demo.repository.PromoRepository;
@@ -79,27 +80,28 @@ public class SalesRepService {
         customerRepository.save(customer);
     }
 
-    public List<PromoEvent> getPromoEvents() {
-        return promoRepository.findAll();
+    public List<PromoInfo> getPromoInfo() {
+        return promoRepository
+                .findAll()
+                .stream()
+                .map(x -> new PromoInfo(x, productRepository
+                        .findById(x.getProductId())
+                        .orElse(null)
+                ))
+                .filter(y -> y.getPromoProduct() != null)
+                .collect(Collectors.toList());
+
     }
 
     public List<Product> getNonPromoProducts() {
-        // The RAM eater
-
-        List<Product> promoProducts = promoRepository
-                .findAll()
-                .stream()
-                .map(PromoEvent::getProduct)
-                .collect(Collectors.toList());
-
         return productRepository
                 .findAll()
                 .stream()
-                .filter(product -> !promoProducts.contains(product))
+                .filter(product -> !promoRepository.existsByProductId(product.getId()))
                 .collect(Collectors.toList());
     }
 
     public void savePromoEvent(PromoEvent promoEvent) {
-        
+
     }
 }

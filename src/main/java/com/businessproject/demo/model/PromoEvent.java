@@ -14,7 +14,7 @@ public class PromoEvent {
     private Date startDate;
     private Date endDate;
 
-    private Product product;
+    private String productId;
     private String managedById;
     private BigDecimal promoPrice;
 
@@ -58,11 +58,11 @@ public class PromoEvent {
         this.promoPrice = promoPrice;
     }
 
-    public Product getProduct() {
-        return product;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

@@ -9,6 +9,7 @@ import com.businessproject.demo.model.Product;
 import com.businessproject.demo.model.SalesRepresentative;
 import com.businessproject.demo.repository.AdminRepository;
 import com.businessproject.demo.repository.ProductRepository;
+import com.businessproject.demo.repository.PromoRepository;
 import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class AdminService {
     private SalesRepRepository salesRepRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private PromoRepository promoRepository;
 
 
     public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException {
@@ -110,6 +113,11 @@ public class AdminService {
     public void deleteProductById(String id) throws NonExistingProductException {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
+            // Delete any promoEvents if they are associated with the product.
+            //TODO Test it
+            if (promoRepository.existsByProductId(id)) {
+                promoRepository.deleteByProductId(id);
+            }
         } else {
             throw new NonExistingProductException();
         }
