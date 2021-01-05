@@ -1,11 +1,9 @@
 package com.businessproject.demo.controller;
 
-import com.businessproject.demo.exeption.AuthorizationException;
-import com.businessproject.demo.exeption.NonExistingCustomerException;
-import com.businessproject.demo.exeption.NonExistingProductException;
-import com.businessproject.demo.exeption.PhoneNumberAlreadyExists;
+import com.businessproject.demo.exeption.*;
 import com.businessproject.demo.model.Customer;
 import com.businessproject.demo.model.Product;
+import com.businessproject.demo.model.PromoEvent;
 import com.businessproject.demo.service.SalesRepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -157,5 +155,26 @@ public class SalesRepController {
             return "representative/invalid_request";
         }
         return "representative/customer_updated";
+    }
+
+    @PostMapping("/new/promotion")
+    public String addPromoEvent(@Valid @ModelAttribute("promoEvent") PromoEvent promoEvent, Model model) {
+        try {
+            salesRepService.savePromoEvent(promoEvent);
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("requesterId", promoEvent.getManagedById());
+            }});
+        } catch (NonExistingProductException | PromotionAlreadyActive | MismatchedDateException exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", promoEvent.getManagedById());
+            }});
+        } catch (AuthorizationException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "representative/invalid_request";
+        }
+        return "representative/promotion_created";
     }
 }

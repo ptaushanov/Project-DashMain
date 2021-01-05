@@ -42,26 +42,35 @@
                 <table class="highlight z-depth-3">
                     <thead class="purple darken-4 white-text gray-text text-lighten-2">
                         <tr>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Promo Price</th>
+                            <td>From</td>
+                            <td>To</td>
+                            <td>Product Name</td>
+                            <td>Price</td>
+                            <td>Promo Price</td>
+                            <td>Status</td>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr th:each="info: ${promoInfo}">
-                            <td th:text="${info.promoEvent.startDate}"></td>
-                            <td th:text="${info.promoEvent.endDate}"></td>
+                            <td th:text="${{info.promoEvent.startDate}}"></td>
+                            <td th:text="${{info.promoEvent.endDate}}"></td>
                             <td th:text="${info.promoProduct.productName}"></td>
                             <td th:text="${info.promoProduct.price}"></td>
                             <td th:text="${info.promoEvent.promoPrice}"></td>
+                            <td>
+                                <button th:if="${info.status == 'Upcoming'}"
+                                    class="btn-flat white-text blue darken-4">Upcoming</button>
+                                <button th:if="${info.status == 'Expired'}"
+                                    class="btn-flat white-text red darken-4">Expired</button>
+                                <button th:if="${info.status == 'Active'}"
+                                    class="btn-flat white-text green darken-4">Active</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="col s12">
+            <div th:unless="${nonPromoProducts.empty}" class="col s12">
                 <table class="highlight z-depth-3">
                     <thead class="purple darken-4 white-text gray-text text-lighten-2">
                         <tr>

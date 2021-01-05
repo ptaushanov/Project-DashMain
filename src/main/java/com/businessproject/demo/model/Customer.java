@@ -8,6 +8,8 @@ import javax.validation.constraints.Size;
 @Document(collection = "Customers")
 public class Customer {
     private String id;
+
+    @NotNull(message = "Managed by was not provided!")
     private String managedById;
 
     @NotNull(message = "First name was not provided!")

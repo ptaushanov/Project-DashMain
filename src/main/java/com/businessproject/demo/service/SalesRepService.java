@@ -1,9 +1,6 @@
 package com.businessproject.demo.service;
 
-import com.businessproject.demo.exeption.AuthorizationException;
-import com.businessproject.demo.exeption.NonExistingCustomerException;
-import com.businessproject.demo.exeption.NonExistingProductException;
-import com.businessproject.demo.exeption.PhoneNumberAlreadyExists;
+import com.businessproject.demo.exeption.*;
 import com.businessproject.demo.model.Customer;
 import com.businessproject.demo.model.Product;
 import com.businessproject.demo.model.PromoEvent;
@@ -15,6 +12,9 @@ import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,13 +81,28 @@ public class SalesRepService {
         customerRepository.save(customer);
     }
 
+    private Date findCurrentDate() {
+        return Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    private String getStatus(Date startDate, Date endDate) {
+        Date currentDate = findCurrentDate();
+        if (currentDate.before(startDate)) {
+            return "Upcoming";
+        } else if (currentDate.after(endDate)) {
+            return "Expired";
+        } else {
+            return "Active";
+        }
+    }
+
     public List<PromoInfo> getPromoInfo() {
         return promoRepository
                 .findAll()
                 .stream()
                 .map(x -> new PromoInfo(x, productRepository
                         .findById(x.getProductId())
-                        .orElse(null)
+                        .orElse(null), getStatus(x.getStartDate(), x.getEndDate())
                 ))
                 .filter(y -> y.getPromoProduct() != null)
                 .collect(Collectors.toList());
@@ -102,8 +117,22 @@ public class SalesRepService {
                 .collect(Collectors.toList());
     }
 
-    public void savePromoEvent(PromoEvent promoEvent) {
-
+    public void savePromoEvent(PromoEvent promoEvent) throws AuthorizationException, NonExistingProductException, PromotionAlreadyActive, MismatchedDateException {
+        if (!salesRepRepository.existsById(promoEvent.getManagedById())) {
+            throw new AuthorizationException();
+        }
+        if (!productRepository.existsById(promoEvent.getProductId())) {
+            throw new NonExistingProductException();
+        }
+        if (promoRepository.existsByProductId(promoEvent.getProductId())) {
+            throw new PromotionAlreadyActive();
+        }
+        if (promoEvent.getEndDate().before(promoEvent.getStartDate())) {
+            throw new MismatchedDateException("End date can't be before start date!");
+        } else if (promoEvent.getEndDate().before(findCurrentDate())) {
+            throw new MismatchedDateException("End date can't be before current date!");
+        }
+        promoRepository.save(promoEvent);
     }
 
     public Product getProductById(String targetId) throws NonExistingProductException {

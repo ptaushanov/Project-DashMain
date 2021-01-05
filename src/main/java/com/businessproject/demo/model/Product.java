@@ -27,7 +27,7 @@ public class Product {
     private String description;
 
     @NotNull(message = "Price was not provided!")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price should be above 0.")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price should have a positive value")
     private BigDecimal price;
 
     @NotNull(message = "Quantity was not provided!")
