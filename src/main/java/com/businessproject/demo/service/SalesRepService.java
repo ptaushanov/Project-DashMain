@@ -87,6 +87,9 @@ public class SalesRepService {
 
     private String getStatus(Date startDate, Date endDate) {
         Date currentDate = findCurrentDate();
+        System.out.println(currentDate);
+        System.out.println(startDate);
+        System.out.println(endDate);
         if (currentDate.before(startDate)) {
             return "Upcoming";
         } else if (currentDate.after(endDate)) {

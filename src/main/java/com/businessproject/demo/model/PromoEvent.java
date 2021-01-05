@@ -1,6 +1,7 @@
 package com.businessproject.demo.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,15 +16,20 @@ public class PromoEvent {
     private String id;
 
     @NotNull(message = "Start date was not provided!")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date startDate;
+
     @NotNull(message = "End date was not provided!")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Indexed(name = "endDateIndex", expireAfterSeconds = 0)
     private Date endDate;
+
     @NotNull(message = "Product id was not provided!")
     private String productId;
+
     @NotNull(message = "Managed by was not provided!")
     private String managedById;
+
     @NotNull(message = "Promotional price was not provided!")
     @DecimalMin(value = "0.0", inclusive = false, message = "Promotional price should have a positive value.")
     private BigDecimal promoPrice;
