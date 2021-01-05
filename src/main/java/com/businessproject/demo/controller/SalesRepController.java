@@ -2,8 +2,10 @@ package com.businessproject.demo.controller;
 
 import com.businessproject.demo.exeption.AuthorizationException;
 import com.businessproject.demo.exeption.NonExistingCustomerException;
+import com.businessproject.demo.exeption.NonExistingProductException;
 import com.businessproject.demo.exeption.PhoneNumberAlreadyExists;
 import com.businessproject.demo.model.Customer;
+import com.businessproject.demo.model.Product;
 import com.businessproject.demo.service.SalesRepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,7 +84,7 @@ public class SalesRepController {
     }
 
     @GetMapping("/promotion/products")
-    public String getPromoProductView(@RequestParam("requesterId") String requesterId, Model model) {
+    public String getPromotionCreateView(@RequestParam("requesterId") String requesterId, Model model) {
         if (salesRepService.existsSalesRepById(requesterId)) {
             model.addAllAttributes(new HashMap<String, Object>() {{
                 put("requesterId", requesterId);
@@ -90,6 +92,26 @@ public class SalesRepController {
                 put("nonPromoProducts", salesRepService.getNonPromoProducts());
             }});
             return "representative/promotions";
+        }
+        return "representative/invalid_request";
+    }
+
+    @GetMapping("/new/promotion")
+    public String getPromoProductView(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
+        if (salesRepService.existsSalesRepById(requesterId)) {
+            try {
+                Product product = salesRepService.getProductById(targetId);
+                model.addAllAttributes(new HashMap<String, Object>() {{
+                    put("requesterId", requesterId);
+                    put("productName", product.getProductName());
+                    put("productPrice", product.getPrice());
+                    put("targetId", targetId);
+                }});
+                return "representative/create_promotion";
+            } catch (NonExistingProductException exception) {
+                model.addAttribute("errorMessage", "Requested a non existing product");
+                return "representative/invalid_request";
+            }
         }
         return "representative/invalid_request";
     }
@@ -136,6 +158,4 @@ public class SalesRepController {
         }
         return "representative/customer_updated";
     }
-
-
 }

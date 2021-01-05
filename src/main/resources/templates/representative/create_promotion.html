@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Crate promotion</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<link rel="stylesheet" th:href="@{/css/representative/common_form.css}">
+<style>
+    form {
+        min-width: 26rem;
+    }
+
+    input[type="date"] {
+        text-align: right !important;
+    }
+
+    input[type="date"]:focus {
+        text-align: left !important;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .underline {
+        border-bottom: 1px solid grey !important;
+    }
+</style>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard/promotion/products(requesterId= ${requesterId})}">Back</a>
+    </div>
+    <div class="container animate__animated animate__fadeIn vh-expand valign-wrapper">
+        <div class="row purple darken-4 plumed">
+            <form th:action="@{/dashboard/new/promotion}" th:method="post" th:object="${promoEvent}" class="col s12">
+                <div class="row shrunked">
+                    <p class="center-align flow-text white-text">New Promotion</p>
+                    <p class="center-align white-text" th:text="${'(' + productName + ')'}"></p>
+
+                </div>
+                <div class="row" hidden="true">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="text" th:value="${requesterId}"
+                            th:name="managedById">
+                    </div>
+                </div>
+                <div class="row" hidden="true">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="text" th:value="${targetId}" th:name="productId">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="date" id="startDate" th:name="startDate">
+                        <label class="white-text" for="startDate">Start Date</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="date" id="endDate" th:name="endDate">
+                        <label class="white-text" for="endDate">End Date</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input class="grey-text text-lighten-2 underline" type="text" disabled
+                            th:value="${'Old price: ' + productPrice}">
+                    </div>
+                    <div class="input-field col s6">
+                        <label class="white-text" for="price">New Price</label>
+                        <input class="white-text" required=true min="0.01" step="0.01" type="number" id="promoPrice"
+                            th:name="promoPrice">
+                    </div>
+                </div>
+
+                <button type="submit" class="blue darken-2 right btn waves-effect waves-light"> Create </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

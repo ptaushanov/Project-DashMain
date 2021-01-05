@@ -2,6 +2,7 @@ package com.businessproject.demo.service;
 
 import com.businessproject.demo.exeption.AuthorizationException;
 import com.businessproject.demo.exeption.NonExistingCustomerException;
+import com.businessproject.demo.exeption.NonExistingProductException;
 import com.businessproject.demo.exeption.PhoneNumberAlreadyExists;
 import com.businessproject.demo.model.Customer;
 import com.businessproject.demo.model.Product;
@@ -103,5 +104,9 @@ public class SalesRepService {
 
     public void savePromoEvent(PromoEvent promoEvent) {
 
+    }
+
+    public Product getProductById(String targetId) throws NonExistingProductException {
+        return productRepository.findById(targetId).orElseThrow(NonExistingProductException::new);
     }
 }
