@@ -53,11 +53,13 @@
 
                     <tbody>
                         <tr th:each="info: ${promoInfo}">
-                            <td th:text="${{info.promoEvent.startDate}}"></td>
-                            <td th:text="${{info.promoEvent.endDate}}"></td>
+                            <td th:text="${#calendars.format(info.promoEvent.startDate, 'dd/MMM/yyyy')}"></td>
+                            <td th:text="${#calendars.format(info.promoEvent.endDate, 'dd/MMM/yyyy')}"></td>
                             <td th:text="${info.promoProduct.productName}"></td>
                             <td th:text="${info.promoProduct.price}"></td>
-                            <td th:text="${info.promoEvent.promoPrice}"></td>
+                            <td
+                                th:text="${info.promoEvent.promoPrice}">
+                            </td>
                             <td>
                                 <button th:if="${info.status == 'Upcoming'}"
                                     class="btn-flat white-text blue darken-4">Upcoming</button>

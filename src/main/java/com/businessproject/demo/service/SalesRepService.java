@@ -12,9 +12,8 @@ import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,18 +80,12 @@ public class SalesRepService {
         customerRepository.save(customer);
     }
 
-    private Date findCurrentDate() {
-        return Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-    }
+    private String getStatus(ZonedDateTime startDate, ZonedDateTime endDate) {
+        ZonedDateTime currentDate = ZonedDateTime.now(ZoneId.systemDefault());
 
-    private String getStatus(Date startDate, Date endDate) {
-        Date currentDate = findCurrentDate();
-        System.out.println(currentDate);
-        System.out.println(startDate);
-        System.out.println(endDate);
-        if (currentDate.before(startDate)) {
+        if (currentDate.isBefore(startDate)) {
             return "Upcoming";
-        } else if (currentDate.after(endDate)) {
+        } else if (currentDate.isAfter(endDate)) {
             return "Expired";
         } else {
             return "Active";
@@ -130,9 +123,14 @@ public class SalesRepService {
         if (promoRepository.existsByProductId(promoEvent.getProductId())) {
             throw new PromotionAlreadyActive();
         }
-        if (promoEvent.getEndDate().before(promoEvent.getStartDate())) {
+
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+
+        if (promoEvent.getEndDate().isBefore(promoEvent.getStartDate())) {
             throw new MismatchedDateException("End date can't be before start date!");
-        } else if (promoEvent.getEndDate().before(findCurrentDate())) {
+        } else if (promoEvent.getEndDate().isEqual(promoEvent.getStartDate())) {
+            throw new MismatchedDateException("End date can't be the same as start date!");
+        } else if (promoEvent.getEndDate().isBefore(now)) {
             throw new MismatchedDateException("End date can't be before current date!");
         }
         promoRepository.save(promoEvent);

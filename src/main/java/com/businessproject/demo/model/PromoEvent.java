@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Document(collection = "PromoEvents")
 public class PromoEvent {
@@ -16,13 +16,13 @@ public class PromoEvent {
     private String id;
 
     @NotNull(message = "Start date was not provided!")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private ZonedDateTime startDate;
 
     @NotNull(message = "End date was not provided!")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Indexed(name = "endDateIndex", expireAfterSeconds = 0)
-    private Date endDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private ZonedDateTime endDate;
 
     @NotNull(message = "Product id was not provided!")
     private String productId;
@@ -42,19 +42,19 @@ public class PromoEvent {
         this.id = id;
     }
 
-    public Date getStartDate() {
+    public ZonedDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(ZonedDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public ZonedDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
     }
 
