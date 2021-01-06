@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,12 +47,7 @@ public class SalesRepService {
     }
 
     public Customer getCustomerById(String id) throws NonExistingCustomerException {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if (customer.isPresent()) {
-            return customer.get();
-        } else {
-            throw new NonExistingCustomerException();
-        }
+        return customerRepository.findById(id).orElseThrow(NonExistingCustomerException::new);
     }
 
     public void deleteRepresentativeById(String id) throws NonExistingCustomerException {

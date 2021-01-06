@@ -13,8 +13,6 @@ public class StringToZonedDateTimeConverter implements Converter<String, ZonedDa
 
     @Override
     public ZonedDateTime convert(String date) {
-        System.out.println("Reading Converter called");
-        System.out.println(date);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return ZonedDateTime.ofInstant(
                 LocalDateTime.of(LocalDate.parse(date, dateTimeFormatter),

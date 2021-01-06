@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -73,12 +72,7 @@ public class AdminService {
     }
 
     public SalesRepresentative getRepresentativeById(String id) throws NonExistingEntityException {
-        Optional<SalesRepresentative> rep = salesRepRepository.findById(id);
-        if (rep.isPresent()) {
-            return rep.get();
-        } else {
-            throw new NonExistingEntityException();
-        }
+        return salesRepRepository.findById(id).orElseThrow(NonExistingEntityException::new);
     }
 
     public void updateRepresentative(SalesRepresentative rep) throws UsernameAlreadyExists, AuthorizationException, NonExistingEntityException {
@@ -102,19 +96,13 @@ public class AdminService {
     }
 
     public Product getProductsById(String id) throws NonExistingProductException {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isPresent()) {
-            return product.get();
-        } else {
-            throw new NonExistingProductException();
-        }
+        return productRepository.findById(id).orElseThrow(NonExistingProductException::new);
+
     }
 
     public void deleteProductById(String id) throws NonExistingProductException {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
-            // Delete any promoEvents if they are associated with the product.
-            //TODO Test it
             if (promoRepository.existsByProductId(id)) {
                 promoRepository.deleteByProductId(id);
             }
