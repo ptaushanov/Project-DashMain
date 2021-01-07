@@ -13,6 +13,7 @@ public class ZonedDateTimeToDateConverter implements Converter<ZonedDateTime, Da
 
     @Override
     public Date convert(ZonedDateTime zonedDateTime) {
+        //System.out.println("ZonedDateTime -> Date");
         return Date.from(zonedDateTime.toInstant());
     }
 

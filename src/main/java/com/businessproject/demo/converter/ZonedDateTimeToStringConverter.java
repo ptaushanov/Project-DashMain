@@ -12,6 +12,7 @@ public class ZonedDateTimeToStringConverter implements Converter<ZonedDateTime, 
 
     @Override
     public String convert(ZonedDateTime zonedDateTime) {
+        //System.out.println("ZonedDateTime -> String");
         return zonedDateTime.toString();
     }
 

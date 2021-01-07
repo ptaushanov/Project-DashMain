@@ -13,7 +13,9 @@ public class StringToZonedDateTimeConverter implements Converter<String, ZonedDa
 
     @Override
     public ZonedDateTime convert(String date) {
+        //System.out.println("String -> ZonedDateTime");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         return ZonedDateTime.ofInstant(
                 LocalDateTime.of(LocalDate.parse(date, dateTimeFormatter),
                         LocalTime.ofSecondOfDay(0)), ZoneOffset.UTC, ZoneId.systemDefault()

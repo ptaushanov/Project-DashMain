@@ -86,8 +86,8 @@ public class SalesRepController {
         if (salesRepService.existsSalesRepById(requesterId)) {
             model.addAllAttributes(new HashMap<String, Object>() {{
                 put("requesterId", requesterId);
-                put("promoInfo", salesRepService.getPromoInfo());
-                put("nonPromoProducts", salesRepService.getNonPromoProducts());
+                put("promoInfo", salesRepService.getPromoInfo(requesterId));
+                put("nonPromoProducts", salesRepService.getNonPromoProducts(requesterId));
             }});
             return "representative/promotions";
         }
