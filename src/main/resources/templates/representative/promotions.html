@@ -47,6 +47,7 @@
                             <td>Product Name</td>
                             <td>Price</td>
                             <td>Promo Price</td>
+                            <td>Quantity</td>
                             <td>Status</td>
                         </tr>
                     </thead>
@@ -57,9 +58,8 @@
                             <td th:text="${#calendars.format(info.promoEvent.endDate, 'dd/MMM/yyyy')}"></td>
                             <td th:text="${info.promoProduct.productName}"></td>
                             <td th:text="${info.promoProduct.price}"></td>
-                            <td
-                                th:text="${info.promoEvent.promoPrice}">
-                            </td>
+                            <td th:text="${info.promoEvent.promoPrice}"></td>
+                            <td th:text="${info.promoProduct.quantity}"></td>
                             <td>
                                 <button th:if="${info.status == 'Upcoming'}"
                                     class="btn-flat white-text blue darken-4">Upcoming</button>

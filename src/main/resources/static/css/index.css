@@ -8,6 +8,14 @@ main {
     flex: 1 0 auto;
 }
 
+h1 {
+    margin-bottom: 0;
+}
+
+h6 {
+    padding-left: 0.3rem;
+}
+
 .bold {
     font-weight: bold !important;
 }

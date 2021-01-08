@@ -146,11 +146,13 @@ public class SalesRepService {
             throw new NonExistingCustomerException();
         }
 
+        // The comment below is for saving time without zone offset meaning +00:00
         // saleRecord.setMadeAt(ZonedDateTime.ofInstant(LocalDateTime.now(), ZoneOffset.UTC, ZoneId.systemDefault()));
-        saleRecord.setMadeAt(ZonedDateTime.now(ZoneId.systemDefault()));
+        ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneId.systemDefault());
+        saleRecord.setMadeAt(currentDateTime);
 
         // TODO: Change to a query that includes date and time periods
-        Optional<PromoEvent> promoEvent = promoRepository.findByProductIdAndManagedById(productId, saleRepId);
+        Optional<PromoEvent> promoEvent = promoRepository.findPromoEvent(saleRepId, productId, currentDateTime);
         Optional<Product> product = productRepository.findById(productId);
 
         if (promoEvent.isPresent()) {
