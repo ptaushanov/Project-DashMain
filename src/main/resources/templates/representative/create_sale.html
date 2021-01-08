@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Sell a product</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<link rel="stylesheet" th:href="@{/css/representative/sale_form.css}">
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    });
+</script>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard(role= 'salesRep',id= ${requesterId})}">Back</a>
+    </div>
+    <div class="container animate__animated animate__fadeIn vh-expand valign-wrapper">
+        <div class="row purple darken-4 plumed">
+            <form th:action="@{/dashboard/new/sale}" th:method="post" th:object="${saleRecord}" class="col s12">
+                <div class="row shrunked">
+                    <p class="center-align flow-text white-text">Sell a product</p>
+                </div>
+                <div class="row" hidden="true">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="text" th:value=${requesterId} th:name="saleRepId">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <select th:name="customerId" class="white-text" required>
+                            <option class="white-text" th:value="null" disabled selected>Choose a customer
+                            </option>
+                            <th:block th:if="${customers.empty}">
+                                <option class="white-text" th:value="null" disabled>No customers</option>
+                            </th:block>
+                            <th:block th:each="customer: ${customers}">
+                                <option th:value="${customer.id}"
+                                    th:text="${customer.fullName + ' (' + customer.phoneNumber + ')'}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <select th:name="productId" class="white-text" required>
+                            <option class="white-text" th:value="null" disabled selected>Choose a product
+                            </option>
+                            <th:block th:if="${products.empty}">
+                                <option class="white-text" th:value="null" disabled>No products</option>
+                            </th:block>
+                            <th:block th:each="product: ${products}">
+                                <option th:value="${product.id}"
+                                    th:text="${product.productName + ' (' + product.category + ')'}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8 marginless">
+                        <label class="white-text" for="quantity">Quantity</label>
+                        <input class="white-text" required=true min="1" step="1" type="number" id="quantity"
+                            th:name="quantity">
+                    </div>
+                </div>
+                <button type="submit" class="blue darken-2 right btn waves-effect waves-light"> Add Record </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,20 +1,15 @@
 package com.businessproject.demo.service;
 
 import com.businessproject.demo.exeption.*;
-import com.businessproject.demo.model.Customer;
-import com.businessproject.demo.model.Product;
-import com.businessproject.demo.model.PromoEvent;
-import com.businessproject.demo.model.PromoInfo;
-import com.businessproject.demo.repository.CustomerRepository;
-import com.businessproject.demo.repository.ProductRepository;
-import com.businessproject.demo.repository.PromoRepository;
-import com.businessproject.demo.repository.SalesRepRepository;
+import com.businessproject.demo.model.*;
+import com.businessproject.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +22,8 @@ public class SalesRepService {
     private ProductRepository productRepository;
     @Autowired
     private PromoRepository promoRepository;
+    @Autowired
+    private SaleRecordRepository saleRecordRepository;
 
     public boolean existsSalesRepById(String id) {
         return salesRepRepository.existsById(id);
@@ -132,5 +129,46 @@ public class SalesRepService {
 
     public Product getProductById(String targetId) throws NonExistingProductException {
         return productRepository.findById(targetId).orElseThrow(NonExistingProductException::new);
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public void saveSaleRecord(SaleRecord saleRecord) throws AuthorizationException, NonExistingCustomerException, NonExistingProductException, InsufficientQuantityException {
+        String saleRepId = saleRecord.getSaleRepId();
+        String productId = saleRecord.getProductId();
+
+        if (!salesRepRepository.existsById(saleRepId)) {
+            throw new AuthorizationException();
+        }
+        if (!customerRepository.existsById(saleRecord.getCustomerId())) {
+            throw new NonExistingCustomerException();
+        }
+
+        // saleRecord.setMadeAt(ZonedDateTime.ofInstant(LocalDateTime.now(), ZoneOffset.UTC, ZoneId.systemDefault()));
+        saleRecord.setMadeAt(ZonedDateTime.now(ZoneId.systemDefault()));
+
+        // TODO: Change to a query that includes date and time periods
+        Optional<PromoEvent> promoEvent = promoRepository.findByProductIdAndManagedById(productId, saleRepId);
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (promoEvent.isPresent()) {
+            saleRecord.setPrice(promoEvent.get().getPromoPrice());
+        } else {
+            if (product.isPresent()) {
+                saleRecord.setPrice(product.get().getPrice());
+                int productQuantity = product.get().getQuantity();
+                if (productQuantity - saleRecord.getQuantity() >= 0) {
+                    // Unsafe
+                    Product updatedProduct = product.get();
+                    updatedProduct.setQuantity(productQuantity - saleRecord.getQuantity());
+                    productRepository.save(updatedProduct);
+                } else throw new InsufficientQuantityException();
+            } else throw new NonExistingProductException();
+        }
+
+
+        saleRecordRepository.save(saleRecord);
     }
 }

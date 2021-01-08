@@ -4,6 +4,7 @@ import com.businessproject.demo.exeption.*;
 import com.businessproject.demo.model.Customer;
 import com.businessproject.demo.model.Product;
 import com.businessproject.demo.model.PromoEvent;
+import com.businessproject.demo.model.SaleRecord;
 import com.businessproject.demo.service.SalesRepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -114,6 +115,19 @@ public class SalesRepController {
         return "representative/invalid_request";
     }
 
+    @GetMapping("/new/sale")
+    public String getSaleProductView(@RequestParam("requesterId") String requesterId, Model model) {
+        if (salesRepService.existsSalesRepById(requesterId)) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("requesterId", requesterId);
+                put("customers", salesRepService.getCustomers(requesterId));
+                put("products", salesRepService.getAllProducts());
+            }});
+            return "representative/create_sale";
+        }
+        return "representative/invalid_request";
+    }
+
     @PostMapping("/new/customer")
     public String addRepresentative(@Valid @ModelAttribute("product") Customer customer, Model model) {
         try {
@@ -177,4 +191,26 @@ public class SalesRepController {
         }
         return "representative/promotion_created";
     }
+
+    @PostMapping("/new/sale")
+    public String addSaleRecord(@Valid @ModelAttribute("saleRecord") SaleRecord saleRecord, Model model) {
+        try {
+            salesRepService.saveSaleRecord(saleRecord);
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
+                put("requesterId", saleRecord.getSaleRepId());
+            }});
+        } catch (NonExistingProductException | NonExistingCustomerException | InsufficientQuantityException exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
+                put("requesterId", saleRecord.getSaleRepId());
+            }});
+        } catch (AuthorizationException exception) {
+            model.addAttribute("errorMessage", exception.getMessage());
+            return "representative/invalid_request";
+        }
+        return "representative/sale_created";
+    }
+
 }
