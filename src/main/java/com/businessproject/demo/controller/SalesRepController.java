@@ -140,6 +140,18 @@ public class SalesRepController {
         return "representative/invalid_request";
     }
 
+    @GetMapping("/products")
+    public String getProductsView(@RequestParam("requesterId") String requesterId, Model model) {
+        if (salesRepService.existsSalesRepById(requesterId)) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("requesterId", requesterId);
+                put("products", salesRepService.getProducts());
+            }});
+            return "representative/products_view";
+        }
+        return "representative/invalid_request";
+    }
+
     @PostMapping("/new/customer")
     public String addRepresentative(@Valid @ModelAttribute("product") Customer customer, Model model) {
         try {

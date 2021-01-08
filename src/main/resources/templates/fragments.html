@@ -55,12 +55,14 @@
 <div class="row" th:fragment="block_operateProducts">
     <div class="col s12">
         <h5>Products</h5>
+        <a th:href="@{/dashboard/products(requesterId=${entity.id})}"
+            class="btn-small waves-effect waves-light teal ">View All</a>
         <a th:href="@{/dashboard/promotion/products(requesterId=${entity.id})}"
             class="btn-small waves-effect waves-light pink darken-2 ">Promotions</a>
         <a th:href="@{/dashboard/sales(requesterId=${entity.id})}"
-            class="btn-small waves-effect waves-light  green darken-3">View Sales</a>
+            class="btn-small waves-effect waves-light  green darken-4">View Sales</a>
         <a th:href="@{/dashboard/new/sale(requesterId=${entity.id})}"
-            class="btn-small waves-effect waves-light  deep-orange">Sell Product</a>
+            class="btn-small waves-effect waves-light  deep-orange">Sell</a>
     </div>
 </div>
 
