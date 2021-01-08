@@ -1,6 +1,6 @@
 package com.businessproject.demo.repository;
 
-import com.businessproject.demo.model.PromoEvent;
+import com.businessproject.demo.model.dbmodels.PromoEvent;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

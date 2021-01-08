@@ -1,4 +1,4 @@
-package com.businessproject.demo.model;
+package com.businessproject.demo.model.dbmodels;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

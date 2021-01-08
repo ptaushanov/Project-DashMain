@@ -1,6 +1,6 @@
 package com.businessproject.demo.repository;
 
-import com.businessproject.demo.model.Customer;
+import com.businessproject.demo.model.dbmodels.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

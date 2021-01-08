@@ -1,10 +1,10 @@
 package com.businessproject.demo.controller;
 
 import com.businessproject.demo.exeption.*;
-import com.businessproject.demo.model.Customer;
-import com.businessproject.demo.model.Product;
-import com.businessproject.demo.model.PromoEvent;
-import com.businessproject.demo.model.SaleRecord;
+import com.businessproject.demo.model.dbmodels.Customer;
+import com.businessproject.demo.model.dbmodels.Product;
+import com.businessproject.demo.model.dbmodels.PromoEvent;
+import com.businessproject.demo.model.dbmodels.SaleRecord;
 import com.businessproject.demo.service.SalesRepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -116,14 +116,26 @@ public class SalesRepController {
     }
 
     @GetMapping("/new/sale")
-    public String getSaleProductView(@RequestParam("requesterId") String requesterId, Model model) {
+    public String getSellProductView(@RequestParam("requesterId") String requesterId, Model model) {
         if (salesRepService.existsSalesRepById(requesterId)) {
             model.addAllAttributes(new HashMap<String, Object>() {{
                 put("requesterId", requesterId);
                 put("customers", salesRepService.getCustomers(requesterId));
-                put("products", salesRepService.getAllProducts());
+                put("products", salesRepService.getProducts());
             }});
             return "representative/create_sale";
+        }
+        return "representative/invalid_request";
+    }
+
+    @GetMapping("/sales")
+    public String getSalesView(@RequestParam("requesterId") String requesterId, Model model) {
+        if (salesRepService.existsSalesRepById(requesterId)) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("requesterId", requesterId);
+                put("sales", salesRepService.getSales(requesterId));
+            }});
+            return "representative/sales_view";
         }
         return "representative/invalid_request";
     }
@@ -198,13 +210,13 @@ public class SalesRepController {
             salesRepService.saveSaleRecord(saleRecord);
             model.addAllAttributes(new HashMap<String, Object>() {{
                 put("isError", false);
-                put("requesterId", saleRecord.getSaleRepId());
+                put("requesterId", saleRecord.getSalesRepId());
             }});
         } catch (NonExistingProductException | NonExistingCustomerException | InsufficientQuantityException exception) {
             model.addAllAttributes(new HashMap<String, Object>() {{
                 put("isError", true);
                 put("errorMessage", exception.getMessage());
-                put("requesterId", saleRecord.getSaleRepId());
+                put("requesterId", saleRecord.getSalesRepId());
             }});
         } catch (AuthorizationException exception) {
             model.addAttribute("errorMessage", exception.getMessage());

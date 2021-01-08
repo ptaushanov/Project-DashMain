@@ -1,4 +1,4 @@
-package com.businessproject.demo.model;
+package com.businessproject.demo.model.dbmodels;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -6,20 +6,20 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Document(collection = "Admins")
-public class Admin implements Entity{
+public class Admin implements Entity {
     private String id;
     private String addedById;
 
     @NotNull(message = "First name was not provided!")
-    @Size(min=2, max=15, message = "First name should be between 2 and 15 characters.")
+    @Size(min = 2, max = 15, message = "First name should be between 2 and 15 characters.")
     private String firstName;
 
     @NotNull(message = "Last name was not provided!")
-    @Size(min=2, max=15, message = "Last name should be between 2 and 15 characters.")
+    @Size(min = 2, max = 15, message = "Last name should be between 2 and 15 characters.")
     private String lastName;
 
     @NotNull(message = "Username was not provided!")
-    @Size(min=2, max=30, message = "Username should be between 2 and 30 characters.")
+    @Size(min = 2, max = 30, message = "Username should be between 2 and 30 characters.")
     private String username;
 
     public String getId() {

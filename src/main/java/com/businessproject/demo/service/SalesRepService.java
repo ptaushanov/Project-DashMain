@@ -1,12 +1,18 @@
 package com.businessproject.demo.service;
 
 import com.businessproject.demo.exeption.*;
-import com.businessproject.demo.model.*;
+import com.businessproject.demo.model.dbmodels.*;
+import com.businessproject.demo.model.info.CustomerInfo;
+import com.businessproject.demo.model.info.ProductInfo;
+import com.businessproject.demo.model.info.PromoInfo;
+import com.businessproject.demo.model.info.SalesRepInfo;
 import com.businessproject.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -131,46 +137,53 @@ public class SalesRepService {
         return productRepository.findById(targetId).orElseThrow(NonExistingProductException::new);
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> getProducts() {
         return productRepository.findAll();
     }
 
     public void saveSaleRecord(SaleRecord saleRecord) throws AuthorizationException, NonExistingCustomerException, NonExistingProductException, InsufficientQuantityException {
-        String saleRepId = saleRecord.getSaleRepId();
-        String productId = saleRecord.getProductId();
+        final String saleRepId = saleRecord.getSalesRepId();
+        final String productId = saleRecord.getProductId();
+        final String customerId = saleRecord.getCustomerId();
 
-        if (!salesRepRepository.existsById(saleRepId)) {
-            throw new AuthorizationException();
-        }
-        if (!customerRepository.existsById(saleRecord.getCustomerId())) {
-            throw new NonExistingCustomerException();
-        }
+        SalesRepresentative salesRep = salesRepRepository
+                .findById(saleRepId)
+                .orElseThrow(AuthorizationException::new);
 
-        // The comment below is for saving time without zone offset meaning +00:00
-        // saleRecord.setMadeAt(ZonedDateTime.ofInstant(LocalDateTime.now(), ZoneOffset.UTC, ZoneId.systemDefault()));
-        ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneId.systemDefault());
+        Customer customer = customerRepository
+                .findById(customerId)
+                .orElseThrow(NonExistingCustomerException::new);
+
+        Product product = productRepository
+                .findById(productId)
+                .orElseThrow(NonExistingProductException::new);
+
+        saleRecord.setSalesRepInfo(SalesRepInfo.ofSalesRepresentative(salesRep));
+        saleRecord.setCustomerInfo(CustomerInfo.ofCustomer(customer));
+        saleRecord.setProductInfo(ProductInfo.ofProduct(product));
+
+        ZonedDateTime currentDateTime = ZonedDateTime.ofInstant(LocalDateTime.now(), ZoneOffset.UTC, ZoneId.systemDefault());
         saleRecord.setMadeAt(currentDateTime);
 
-        // TODO: Change to a query that includes date and time periods
         Optional<PromoEvent> promoEvent = promoRepository.findPromoEvent(saleRepId, productId, currentDateTime);
-        Optional<Product> product = productRepository.findById(productId);
 
         if (promoEvent.isPresent()) {
             saleRecord.setPrice(promoEvent.get().getPromoPrice());
         } else {
-            if (product.isPresent()) {
-                saleRecord.setPrice(product.get().getPrice());
-                int productQuantity = product.get().getQuantity();
-                if (productQuantity - saleRecord.getQuantity() >= 0) {
-                    // Unsafe
-                    Product updatedProduct = product.get();
-                    updatedProduct.setQuantity(productQuantity - saleRecord.getQuantity());
-                    productRepository.save(updatedProduct);
-                } else throw new InsufficientQuantityException();
-            } else throw new NonExistingProductException();
+            saleRecord.setPrice(product.getPrice());
         }
 
+        int productQuantity = product.getQuantity();
+        if (productQuantity - saleRecord.getQuantity() >= 0) {
+            // Unsafe
+            product.setQuantity(productQuantity - saleRecord.getQuantity());
+            productRepository.save(product);
+        } else throw new InsufficientQuantityException();
 
         saleRecordRepository.save(saleRecord);
+    }
+
+    public List<SaleRecord> getSales(String requesterId) {
+        return saleRecordRepository.findAllBySalesRepId(requesterId);
     }
 }

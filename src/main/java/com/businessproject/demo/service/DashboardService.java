@@ -2,9 +2,9 @@ package com.businessproject.demo.service;
 
 import com.businessproject.demo.exeption.InvalidRoleException;
 import com.businessproject.demo.exeption.NonExistingEntityException;
-import com.businessproject.demo.model.Admin;
-import com.businessproject.demo.model.Entity;
-import com.businessproject.demo.model.SalesRepresentative;
+import com.businessproject.demo.model.dbmodels.Admin;
+import com.businessproject.demo.model.dbmodels.Entity;
+import com.businessproject.demo.model.dbmodels.SalesRepresentative;
 import com.businessproject.demo.repository.AdminRepository;
 import com.businessproject.demo.repository.SalesRepRepository;
 import org.springframework.beans.factory.annotation.Autowired;

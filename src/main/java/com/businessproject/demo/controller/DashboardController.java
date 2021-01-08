@@ -2,7 +2,7 @@ package com.businessproject.demo.controller;
 
 import com.businessproject.demo.exeption.InvalidRoleException;
 import com.businessproject.demo.exeption.NonExistingEntityException;
-import com.businessproject.demo.model.Entity;
+import com.businessproject.demo.model.dbmodels.Entity;
 import com.businessproject.demo.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,23 +27,23 @@ public class DashboardController {
     }
 
     @GetMapping("/start/administrator")
-    public String getAdminSelectView(Model model){
+    public String getAdminSelectView(Model model) {
         model.addAttribute("entities", dashboardService.getAllAdmins());
         model.addAttribute("role", "admin");
         return "start/select_view";
     }
 
     @GetMapping("/start/representative")
-    public String getSalesRepSelectView(Model model){
+    public String getSalesRepSelectView(Model model) {
         model.addAttribute("entities", dashboardService.getAllSalesReps());
         model.addAttribute("role", "salesRep");
         return "start/select_view";
     }
 
     @GetMapping("/dashboard")
-    public String getDashboardView(@RequestParam(value = "role", required = false) String role, @RequestParam(value = "id", required = false) String id,Model model){
+    public String getDashboardView(@RequestParam(value = "role", required = false) String role, @RequestParam(value = "id", required = false) String id, Model model) {
 
-        if(role == null || id == null){
+        if (role == null || id == null) {
             model.addAttribute("errorMessage", "Not a valid request was provided for accessing the dashboard page!");
             return "dashboard/error_view";
         }

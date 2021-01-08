@@ -1,5 +1,9 @@
-package com.businessproject.demo.model;
+package com.businessproject.demo.model.dbmodels;
 
+import com.businessproject.demo.model.info.CustomerInfo;
+import com.businessproject.demo.model.info.ProductInfo;
+import com.businessproject.demo.model.info.SalesRepInfo;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,10 +17,15 @@ public class SaleRecord {
     private String id;
 
     @NotNull(message = "Customer id was not provided!")
+    @Transient
     private String customerId;
 
     @NotNull(message = "Sales representative id was not provided!")
-    private String saleRepId;
+    private String salesRepId;
+
+    @NotNull(message = "ProductId was not provided!")
+    @Transient
+    private String productId;
 
     private BigDecimal price;
 
@@ -27,8 +36,9 @@ public class SaleRecord {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime madeAt;
 
-    @NotNull(message = "ProductId was not provided!")
-    private String productId;
+    private ProductInfo productInfo;
+    private CustomerInfo customerInfo;
+    private SalesRepInfo salesRepInfo;
 
     public String getId() {
         return id;
@@ -42,12 +52,12 @@ public class SaleRecord {
         this.customerId = customerId;
     }
 
-    public String getSaleRepId() {
-        return saleRepId;
+    public String getSalesRepId() {
+        return salesRepId;
     }
 
-    public void setSaleRepId(String saleRepId) {
-        this.saleRepId = saleRepId;
+    public void setSalesRepId(String salesRepId) {
+        this.salesRepId = salesRepId;
     }
 
     public String getProductId() {
@@ -62,7 +72,7 @@ public class SaleRecord {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(@NotNull BigDecimal price) {
         this.price = price;
     }
 
@@ -78,8 +88,35 @@ public class SaleRecord {
         return madeAt;
     }
 
-    public void setMadeAt(ZonedDateTime madeAt) {
+    public void setMadeAt(@NotNull ZonedDateTime madeAt) {
         this.madeAt = madeAt;
     }
 
+    public ProductInfo getProductInfo() {
+        return productInfo;
+    }
+
+    public void setProductInfo(@NotNull ProductInfo productInfo) {
+        this.productInfo = productInfo;
+    }
+
+    public CustomerInfo getCustomerInfo() {
+        return customerInfo;
+    }
+
+    public void setCustomerInfo(@NotNull CustomerInfo customerInfo) {
+        this.customerInfo = customerInfo;
+    }
+
+    public SalesRepInfo getSalesRepInfo() {
+        return salesRepInfo;
+    }
+
+    public void setSalesRepInfo(@NotNull SalesRepInfo salesRepInfo) {
+        this.salesRepInfo = salesRepInfo;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return this.price.multiply(BigDecimal.valueOf(this.quantity));
+    }
 }
