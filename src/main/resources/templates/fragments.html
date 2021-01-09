@@ -11,7 +11,7 @@
 </head>
 
 <div class="row" th:fragment="entity_info">
-    <div class="col s12 mt-10">
+    <div class="col s12">
         <h4 th:text="|${entity.fullName} (${entity.username})|"></h4>
         <p th:text="${entity.id}"></p>
         <a th:href="@{/start/} + ${rolePath}" class="btn-small waves-effect waves-light pink darken-4">Switch</a>
@@ -39,6 +39,16 @@
             class="btn-small waves-effect waves-light pink darken-2 ">Manage</a>
         <a th:href="@{/dashboard/new/product(requesterId=${entity.id})}"
             class="btn-small waves-effect waves-light  deep-orange">Add New</a>
+    </div>
+</div>
+
+<div class="row" th:fragment="block_analytics">
+    <div class="col s12">
+        <h5>Sales Analytics</h5>
+        <a th:href="@{/dashboard/analyze/sales/representative(requesterId=${entity.id})}"
+            class="analyse-btn btn-small waves-effect waves-light indigo darken-4">Analyze by representative</a>
+        <a th:href="@{/dashboard/analyze/sales/timeframe(requesterId=${entity.id})}"
+            class="analyse-btn btn-small waves-effect waves-light deep-purple accent-3">Analyze by time period</a>
     </div>
 </div>
 

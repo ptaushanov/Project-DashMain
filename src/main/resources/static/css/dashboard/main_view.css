@@ -3,6 +3,23 @@
     padding: 1rem;
 }
 
-.mt-10 {
-    margin-top: 10rem;
+.vh-expand {
+    min-height: 100vh;
+}
+
+.constrain-width {
+    min-width: 30rem;
+}
+
+.row {
+    margin-left: 0 !important;
+}
+
+.analyse-btn {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
 }

@@ -9,18 +9,27 @@
     <div class="navigation">
         <a class="waves-effect waves-light btn-small left white-text purple darken-4" th:href="@{/start}">Back</a>
     </div>
-    <div class="container animate__animated animate__fadeIn">
-        <th:block th:insert="fragments :: entity_info"></th:block>
+    <div class="container animate__animated animate__fadeIn valign-wrapper vh-expand">
+        <div class="row">
+            <div class="col s8 constrain-width">
+                <th:block th:insert="fragments :: entity_info"></th:block>
 
-        <th:block th:if="${rolePath == 'administrator'}">
-            <th:block th:insert="fragments :: block_salesReps"></th:block>
-            <th:block th:insert="fragments :: block_manageProducts"></th:block>
-        </th:block>
+                <th:block th:if="${rolePath == 'administrator'}">
+                    <th:block th:insert="fragments :: block_salesReps"></th:block>
+                    <th:block th:insert="fragments :: block_manageProducts"></th:block>
+                </th:block>
 
-        <th:block th:if="${rolePath == 'representative'}">
-            <th:block th:insert="fragments :: block_manageCustomers"></th:block>
-            <th:block th:insert="fragments :: block_operateProducts"></th:block>
-        </th:block>
+                <th:block th:if="${rolePath == 'representative'}">
+                    <th:block th:insert="fragments :: block_manageCustomers"></th:block>
+                    <th:block th:insert="fragments :: block_operateProducts"></th:block>
+                </th:block>
+            </div>
+            <div class="col s4 mt-2">
+                <th:block th:if="${rolePath == 'administrator'}">
+                    <th:block th:insert="fragments :: block_analytics"></th:block>
+                </th:block>
+            </div>
+        </div>
     </div>
 </body>
 

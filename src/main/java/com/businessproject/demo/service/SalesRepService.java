@@ -151,7 +151,7 @@ public class SalesRepService {
                 .orElseThrow(AuthorizationException::new);
 
         Customer customer = customerRepository
-                .findById(customerId)
+                .findByIdAndManagedById(customerId, saleRepId)
                 .orElseThrow(NonExistingCustomerException::new);
 
         Product product = productRepository

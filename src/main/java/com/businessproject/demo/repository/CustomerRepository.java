@@ -12,4 +12,6 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
     public List<Customer> findAllByManagedById(String salesRepId);
 
     Optional<Customer> findByPhoneNumber(String phoneNumber);
+
+    Optional<Customer> findByIdAndManagedById(String customerId, String salesRepId);
 }
