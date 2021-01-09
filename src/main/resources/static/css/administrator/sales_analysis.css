@@ -9,6 +9,14 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
+input[type="date"] {
+    text-align: right !important;
+}
+
+input[type="date"]:focus {
+    text-align: left !important;
+}
+
 .navigation {
     position: absolute;
     padding: 1rem;
@@ -37,5 +45,9 @@ td {
 }
 
 .picker {
+    padding: 0.5rem 2rem !important;
+}
+
+.picker-composite {
     padding: 0.3rem 2rem !important;
 }

@@ -12,6 +12,7 @@ import com.businessproject.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -126,5 +127,9 @@ public class AdminService {
             throw new NonExistingEntityException();
         }
         return saleRecordRepository.findAllBySalesRepId(salesRepId);
+    }
+
+    public List<SaleRecord> getSalesFromTimeFrame(ZonedDateTime from, ZonedDateTime to) {
+        return saleRecordRepository.findSaleRecords(from, to);
     }
 }

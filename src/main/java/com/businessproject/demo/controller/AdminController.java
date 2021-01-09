@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 
 @Controller
@@ -171,6 +172,19 @@ public class AdminController {
                     model.addAttribute("errorMessage", exception.getMessage());
                     return "administrator/invalid_request";
                 }
+            }
+            return "administrator/sales_analysis";
+        }
+        return "administrator/invalid_request";
+    }
+
+    @GetMapping("/analyze/sales/timeframe")
+    public String getAnalyzeSalesByTimeframeView(@RequestParam("requesterId") String requesterId, @RequestParam(value = "from", required = false) ZonedDateTime from, @RequestParam(value = "to", required = false) ZonedDateTime to, Model model) {
+        if (adminService.existsAdminById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            model.addAttribute("pickBy", "timeframe");
+            if (from != null && to != null) {
+                model.addAttribute("sales", adminService.getSalesFromTimeFrame(from, to));
             }
             return "administrator/sales_analysis";
         }
