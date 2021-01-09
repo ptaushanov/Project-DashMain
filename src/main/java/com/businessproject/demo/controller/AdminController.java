@@ -158,6 +158,25 @@ public class AdminController {
         return "administrator/invalid_request";
     }
 
+    @GetMapping("/analyze/sales/representative")
+    public String getAnalyzeSalesByRepView(@RequestParam("requesterId") String requesterId, @RequestParam(value = "targetId", required = false) String targetId, Model model) {
+        if (adminService.existsAdminById(requesterId)) {
+            model.addAttribute("requesterId", requesterId);
+            model.addAttribute("pickBy", "salesRep");
+            model.addAttribute("salesReps", adminService.getRepresentatives());
+            if (targetId != null) {
+                try {
+                    model.addAttribute("sales", adminService.getSalesBySalesRep(targetId));
+                } catch (NonExistingEntityException exception) {
+                    model.addAttribute("errorMessage", exception.getMessage());
+                    return "administrator/invalid_request";
+                }
+            }
+            return "administrator/sales_analysis";
+        }
+        return "administrator/invalid_request";
+    }
+
     @PostMapping("/new/administrator")
     public String addAdmin(@Valid @ModelAttribute("admin") Admin admin, Model model) {
         // TODO make request param optional

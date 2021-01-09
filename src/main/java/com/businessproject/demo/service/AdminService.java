@@ -6,11 +6,9 @@ import com.businessproject.demo.exeption.NonExistingProductException;
 import com.businessproject.demo.exeption.UsernameAlreadyExists;
 import com.businessproject.demo.model.dbmodels.Admin;
 import com.businessproject.demo.model.dbmodels.Product;
+import com.businessproject.demo.model.dbmodels.SaleRecord;
 import com.businessproject.demo.model.dbmodels.SalesRepresentative;
-import com.businessproject.demo.repository.AdminRepository;
-import com.businessproject.demo.repository.ProductRepository;
-import com.businessproject.demo.repository.PromoRepository;
-import com.businessproject.demo.repository.SalesRepRepository;
+import com.businessproject.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +24,8 @@ public class AdminService {
     private ProductRepository productRepository;
     @Autowired
     private PromoRepository promoRepository;
+    @Autowired
+    private SaleRecordRepository saleRecordRepository;
 
 
     public void saveAdmin(Admin admin) throws UsernameAlreadyExists, AuthorizationException {
@@ -119,5 +119,12 @@ public class AdminService {
             throw new AuthorizationException();
         }
         productRepository.save(product);
+    }
+
+    public List<SaleRecord> getSalesBySalesRep(String salesRepId) throws NonExistingEntityException {
+        if (!salesRepRepository.existsById(salesRepId)) {
+            throw new NonExistingEntityException();
+        }
+        return saleRecordRepository.findAllBySalesRepId(salesRepId);
     }
 }

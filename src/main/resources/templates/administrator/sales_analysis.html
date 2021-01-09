@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Sales Analysis</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<link rel="stylesheet" th:href="@{/css/administrator/sales_analysis.css}">
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    });
+</script>
+</head>
+
+<body>
+    <div class="navigation">
+        <a class="waves-effect waves-light btn-small left white-text purple darken-4"
+            th:href="@{/dashboard(role= 'admin',id= ${requesterId})}">Back</a>
+    </div>
+    <div class="container animate__animated animate__fadeIn">
+        <div class="row">
+            <div class="col s12">
+                <h3>Analysis</h3>
+            </div>
+        </div>
+        <div class="row">
+            <form th:if="${pickBy == 'salesRep'}" th:action="@{/dashboard/analyze/sales/representative}" th:method="get"
+                th:object="${product}" class="col s12">
+                <div class="row" hidden="true">
+                    <div class="input-field col s12">
+                        <input class="white-text" required=true type="text" th:value=${requesterId}
+                            th:name="requesterId">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 purple darken-4 picker z-depth-3">
+                        <select th:name="targetId" class="white-text" required>
+                            <option class="white-text" th:value="null" disabled selected>Choose a representative
+                            </option>
+                            <th:block th:if="${salesReps.empty}">
+                                <option class="white-text" th:value="null" disabled>No representatives</option>
+                            </th:block>
+                            <th:block th:each="rep: ${salesReps}">
+                                <option th:value="${rep.id}" th:text="${rep.fullName + ' (' + rep.username + ')'}">
+                                </option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="indigo darken-2 right btn waves-effect waves-light">Search</button>
+            </form>
+            <form th:if="${pickBy == 'timeFrame'}" th:action="@{/dashboard/analyze/sales/timeframe}" th:method="get"
+                th:object="${product}" class="col s12">
+                <div class="row">
+                    <div class="col s12">
+                        <!-- Date picker options -->
+                    </div>
+                </div>
+                <button type="submit" class="indigo darken-2 right btn waves-effect waves-light">Search</button>
+
+            </form>
+        </div>
+        <div class="row">
+            <div th:if="${sales != null}" class="col s12 paddingless-lr">
+                <div th:if="${sales.empty}">
+                    <h2 class="center-align purple-text text-darken-4">No sales</h2>
+                </div>
+                <div th:unless="${sales.empty}">
+                    <table class="highlight z-depth-3">
+                        <thead class="purple darken-4 white-text gray-text text-lighten-2">
+                            <tr>
+                                <td>Date</td>
+                                <td>Representative Name</td>
+                                <td>Representative Username</td>
+                                <td>Customer</td>
+                                <td>Phone Number</td>
+                                <td>Product Name</td>
+                                <td>Category</td>
+                                <td>Price</td>
+                                <td>Quantity</td>
+                                <td>Total Price</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="sale: ${sales}">
+                                <td th:text="${#calendars.format(sale.madeAt, 'dd/MM/yyyy HH:mm')}"></td>
+                            <td th:text="${sale.salesRepInfo.fullName}"></td>
+                            <td th:text="${sale.salesRepInfo.username}"></td>
+                            <td th:text="${sale.customerInfo.fullName}"></td>
+                            <td th:text="${sale.customerInfo.phoneNumber}"></td>
+                            <td th:text="${sale.productInfo.productName}"></td>
+                            <td th:text="${sale.productInfo.category}"></td>
+                            <td th:text="${sale.price}"></td>
+                            <td th:text="${sale.quantity}"></td>
+                            <td th:text="${sale.totalPrice}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

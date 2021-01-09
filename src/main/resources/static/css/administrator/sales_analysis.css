@@ -1,0 +1,41 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.navigation {
+    position: absolute;
+    padding: 1rem;
+}
+
+.dropdown-trigger {
+    color: whitesmoke;
+}
+
+.dropdown-content {
+    background-color: whitesmoke !important;
+}
+
+li span {
+    color: #4a148c !important;
+}
+
+td {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.paddingless-lr {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.picker {
+    padding: 0.3rem 2rem !important;
+}
