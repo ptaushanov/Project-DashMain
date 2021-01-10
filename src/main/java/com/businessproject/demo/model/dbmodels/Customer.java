@@ -1,8 +1,10 @@
 package com.businessproject.demo.model.dbmodels;
 
+import com.businessproject.demo.configuration.IValidationPatterns;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Document(collection = "Customers")
@@ -13,17 +15,18 @@ public class Customer {
     private String managedById;
 
     @NotNull(message = "First name was not provided!")
+    @Pattern(regexp = IValidationPatterns.NAME_PATTERN, message = "Not a valid first name was provided!")
     @Size(min = 2, max = 15, message = "First name should be between 2 and 15 characters.")
     private String firstName;
 
     @NotNull(message = "Last name was not provided!")
+    @Pattern(regexp = IValidationPatterns.NAME_PATTERN, message = "Not a valid last name was provided!")
     @Size(min = 2, max = 15, message = "Last name should be between 2 and 15 characters.")
     private String lastName;
 
     @NotNull(message = "Phone number was not provided!")
-    @Size(min = 3, max = 16, message = "Phone number should be between 3 and 16 characters.")
+    @Pattern(regexp = IValidationPatterns.PHONE_PATTERN, message = "Not a valid phone number!")
     private String phoneNumber;
-
 
     public String getId() {
         return id;
@@ -46,7 +49,7 @@ public class Customer {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -54,7 +57,7 @@ public class Customer {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.trim();
     }
 
     public String getPhoneNumber() {
@@ -62,7 +65,7 @@ public class Customer {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public String getFullName() {
