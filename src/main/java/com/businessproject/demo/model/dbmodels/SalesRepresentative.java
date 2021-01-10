@@ -1,6 +1,7 @@
 package com.businessproject.demo.model.dbmodels;
 
 import com.businessproject.demo.configuration.IValidationPatterns;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Document(collection = "SalesReps")
 public class SalesRepresentative implements Entity {
     private String id;
+    @Transient
     private String managedById;
 
     @NotNull(message = "First name was not provided!")
