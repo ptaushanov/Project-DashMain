@@ -11,8 +11,13 @@
             <div class="col s12">
                 <div class="card purple darken-4">
                     <div class="card-content white-text">
-                        <span class="card-title">New product was added!</span>
-                        <p>The product <span th:text="${productName}"></span> was added successfully!</p>
+                        <th:block th:if="${isError}">
+                            <span class="card-title" th:text="${errorMessage}">Error</span>
+                        </th:block>
+                        <th:block th:unless="${isError}">
+                            <span class="card-title">New product was added!</span>
+                            <p>The product <span th:text="${productName}"></span> was added successfully!</p>
+                        </th:block>
                     </div>
                     <div class="card-action">
                         <a class="white-text"

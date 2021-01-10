@@ -1,9 +1,6 @@
 package com.businessproject.demo.service;
 
-import com.businessproject.demo.exeption.AuthorizationException;
-import com.businessproject.demo.exeption.NonExistingEntityException;
-import com.businessproject.demo.exeption.NonExistingProductException;
-import com.businessproject.demo.exeption.UsernameAlreadyExists;
+import com.businessproject.demo.exeption.*;
 import com.businessproject.demo.model.dbmodels.Admin;
 import com.businessproject.demo.model.dbmodels.Product;
 import com.businessproject.demo.model.dbmodels.SaleRecord;
@@ -49,9 +46,16 @@ public class AdminService {
         salesRepRepository.save(rep);
     }
 
-    public void saveProduct(Product product) throws AuthorizationException {
+    public void saveProduct(Product product) throws AuthorizationException, ProductNameExistsException {
         if (!adminRepository.existsById(product.getManagedById())) {
             throw new AuthorizationException();
+        }
+        String searchedString = product
+                .getProductName()
+                .replaceAll("\\s\\s+", " ")
+                .trim();
+        if (productRepository.existsByProductName(searchedString)) {
+            throw new ProductNameExistsException();
         }
         productRepository.save(product);
     }
@@ -112,12 +116,21 @@ public class AdminService {
         }
     }
 
-    public void updateProduct(Product product) throws AuthorizationException, NonExistingProductException {
+    public void updateProduct(Product product) throws AuthorizationException, NonExistingProductException, ProductNameExistsException {
         if (!productRepository.existsById(product.getId())) {
             throw new NonExistingProductException();
         }
         if (!adminRepository.existsById(product.getManagedById())) {
             throw new AuthorizationException();
+        }
+
+        String searchedString = product
+                .getProductName()
+                .replaceAll("\\s\\s+", " ")
+                .trim();
+
+        if (productRepository.existsByProductNameAndIdNot(searchedString, product.getId())) {
+            throw new ProductNameExistsException();
         }
         productRepository.save(product);
     }

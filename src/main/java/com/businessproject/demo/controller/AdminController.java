@@ -1,9 +1,6 @@
 package com.businessproject.demo.controller;
 
-import com.businessproject.demo.exeption.AuthorizationException;
-import com.businessproject.demo.exeption.NonExistingEntityException;
-import com.businessproject.demo.exeption.NonExistingProductException;
-import com.businessproject.demo.exeption.UsernameAlreadyExists;
+import com.businessproject.demo.exeption.*;
 import com.businessproject.demo.model.dbmodels.Admin;
 import com.businessproject.demo.model.dbmodels.Product;
 import com.businessproject.demo.model.dbmodels.SalesRepresentative;
@@ -264,7 +261,14 @@ public class AdminController {
         try {
             adminService.saveProduct(product);
             model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", false);
                 put("productName", product.getProductName());
+                put("requesterId", product.getManagedById());
+            }});
+        } catch (ProductNameExistsException exception) {
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("isError", true);
+                put("errorMessage", exception.getMessage());
                 put("requesterId", product.getManagedById());
             }});
         } catch (AuthorizationException authorizationException) {
@@ -282,7 +286,7 @@ public class AdminController {
                 put("isError", false);
                 put("requesterId", product.getManagedById());
             }});
-        } catch (NonExistingProductException exception) {
+        } catch (NonExistingProductException | ProductNameExistsException exception) {
             model.addAllAttributes(new HashMap<String, Object>() {{
                 put("isError", true);
                 put("errorMessage", exception.getMessage());
