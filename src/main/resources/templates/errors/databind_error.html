@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
+<title>Validation Error</title>
+<th:block th:insert="fragments :: common_head"></th:block>
+<link rel="stylesheet" th:href="@{/css/representative/common_style.css}">
+</head>
+
+<body>
+    <div class="container animate__animated animate__fadeIn valign-wrapper">
+        <div class="row">
+            <div class="col s12">
+                <div class="card purple darken-4">
+                    <div class="card-content white-text">
+                        <span class="card-title"
+                            th:text="${'Some values for the '  +  model + ' were rejected!'}">Error</span>
+                        <div class="row">
+                            <div th:each="error : ${errors}" class="col s12">
+                                <p class="white-text" th:text="${'Error: ' + error}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" href="#" onclick="history.back(-1)">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
