@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”> <head>
-<title>Added <th:block th:text=${entityName}></th:block>
-</title>
+<title th:if="${isError}">Failed</title>
+<title th:unless="${isError}" th:text="${'Added ' + entityName}"></title>
 <th:block th:insert="fragments :: common_head"></th:block>
 <link rel="stylesheet" th:href="@{/css/administrator/common_style.css}">
 </head>
