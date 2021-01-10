@@ -86,11 +86,8 @@ public class AdminService {
         if (!adminRepository.existsById(rep.getManagedById())) {
             throw new AuthorizationException();
         }
-        if (salesRepRepository.existsByUsername(rep.getUsername())) {
-            SalesRepresentative oldRep = salesRepRepository.findById(rep.getId()).get();
-            if (!oldRep.getUsername().equals(rep.getUsername())) {
-                throw new UsernameAlreadyExists();
-            }
+        if (salesRepRepository.existsByUsernameAndIdNot(rep.getUsername(), rep.getId())) {
+            throw new UsernameAlreadyExists();
         }
         salesRepRepository.save(rep);
     }
@@ -101,7 +98,6 @@ public class AdminService {
 
     public Product getProductsById(String id) throws NonExistingProductException {
         return productRepository.findById(id).orElseThrow(NonExistingProductException::new);
-
     }
 
     public void deleteProductById(String id) throws NonExistingProductException {
