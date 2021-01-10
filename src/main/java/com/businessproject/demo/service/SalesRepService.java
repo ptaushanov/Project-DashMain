@@ -68,11 +68,8 @@ public class SalesRepService {
         if (!salesRepRepository.existsById(customer.getManagedById())) {
             throw new AuthorizationException();
         }
-        if (customerRepository.existsByPhoneNumber(customer.getPhoneNumber())) {
-            Customer oldCustomer = customerRepository.findById(customer.getId()).get();
-            if (!oldCustomer.getPhoneNumber().equals(customer.getPhoneNumber())) {
-                throw new PhoneNumberAlreadyExists();
-            }
+        if (customerRepository.existsByPhoneNumberAndIdNot(customer.getPhoneNumber(), customer.getId())) {
+            throw new PhoneNumberAlreadyExists();
         }
         customerRepository.save(customer);
     }
