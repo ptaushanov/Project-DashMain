@@ -55,7 +55,7 @@ public class Product {
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
+        this.productName = productName.trim();
     }
 
     public String getCategory() {
@@ -63,7 +63,7 @@ public class Product {
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = category.trim();
     }
 
     public String getDescription() {

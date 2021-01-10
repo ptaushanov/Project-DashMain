@@ -52,8 +52,7 @@ public class AdminService {
         }
         String searchedString = product
                 .getProductName()
-                .replaceAll("\\s\\s+", " ")
-                .trim();
+                .replaceAll("\\s\\s+", " ");
         if (productRepository.existsByProductName(searchedString)) {
             throw new ProductNameExistsException();
         }
@@ -126,8 +125,7 @@ public class AdminService {
 
         String searchedString = product
                 .getProductName()
-                .replaceAll("\\s\\s+", " ")
-                .trim();
+                .replaceAll("\\s\\s+", " ");
 
         if (productRepository.existsByProductNameAndIdNot(searchedString, product.getId())) {
             throw new ProductNameExistsException();
