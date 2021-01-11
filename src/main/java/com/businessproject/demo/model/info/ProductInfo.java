@@ -4,6 +4,7 @@ import com.businessproject.demo.model.dbmodels.Product;
 
 import javax.validation.constraints.NotNull;
 
+// Product information model for use in the sale records
 public class ProductInfo {
     private String productName;
     private String category;

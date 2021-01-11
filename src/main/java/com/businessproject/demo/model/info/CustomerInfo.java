@@ -4,6 +4,7 @@ import com.businessproject.demo.model.dbmodels.Customer;
 
 import javax.validation.constraints.NotNull;
 
+// Customer information model for use in the sale records
 public class CustomerInfo {
     private String fullName;
     private String phoneNumber;

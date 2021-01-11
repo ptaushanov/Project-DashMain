@@ -15,6 +15,10 @@ import java.util.List;
 @Configuration
 public class MongoConfiguration {
 
+    // Custom Mongo configuration for all custom converters
+    // Meaning telling Spring to use them when reading or
+    // writing from MongoDB's database
+
     @Bean
     public MongoCustomConversions customConversions() {
         List<Converter<?, ?>> converters = new ArrayList<>();

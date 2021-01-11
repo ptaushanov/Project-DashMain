@@ -5,6 +5,7 @@ import com.businessproject.demo.model.dbmodels.PromoEvent;
 
 import javax.validation.constraints.NotNull;
 
+// Promotion information model for use in promotions view
 public class PromoInfo {
     private final PromoEvent promoEvent;
     private final Product promoProduct;

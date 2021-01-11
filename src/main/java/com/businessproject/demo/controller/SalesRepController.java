@@ -21,7 +21,6 @@ public class SalesRepController {
     private SalesRepService salesRepService;
 
     @GetMapping("/new/customer")
-    // TODO make request param optional
     public String getCustomerAddView(@RequestParam("requesterId") String requesterId, Model model) {
         if (salesRepService.existsSalesRepById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
@@ -32,7 +31,6 @@ public class SalesRepController {
 
     @GetMapping("/manage/customers")
     public String getProductManageView(@RequestParam("requesterId") String requesterId, Model model) {
-        // TODO make request param optional
         if (salesRepService.existsSalesRepById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             model.addAttribute("customers", salesRepService.getCustomers(requesterId));
@@ -45,8 +43,6 @@ public class SalesRepController {
 
     @GetMapping("/update/customer")
     public String getEditRepresentativeView(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
-        // TODO make request param optional
-
         if (salesRepService.existsSalesRepById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             try {

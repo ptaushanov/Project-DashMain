@@ -10,12 +10,15 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 public class TemplateConfiguration {
+
+    // Template configuration for the use of hot swapping templates
+
     @Autowired
     private ThymeleafProperties properties;
 
     @Value("${spring.thymeleaf.templates_root:}")
     private String templatesRoot;
-    
+
     @Bean
     public ITemplateResolver defaultTemplateResolver() {
         FileTemplateResolver resolver = new FileTemplateResolver();

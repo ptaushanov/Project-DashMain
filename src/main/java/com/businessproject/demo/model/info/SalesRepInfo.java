@@ -4,6 +4,7 @@ import com.businessproject.demo.model.dbmodels.SalesRepresentative;
 
 import javax.validation.constraints.NotNull;
 
+// Sales Representative information model for use in the sale records
 public class SalesRepInfo {
     private String fullName;
     private String username;

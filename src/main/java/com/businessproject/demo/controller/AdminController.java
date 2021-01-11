@@ -18,35 +18,42 @@ import java.util.HashMap;
 @RequestMapping("/dashboard")
 public class AdminController {
 
+    // Most of the request if not all are authorized through 
+    // something called "requesterId", that is the sales representative
+    // or admin that make the specific request must authorize with their id
+
     @Autowired
     AdminService adminService;
 
+    // GET mapping for getting the "Add Admin page"
     @GetMapping("/new/administrator")
-    // TODO make request param optional
-
     public String getAdminAddView(@RequestParam("requesterId") String requesterId, Model model) {
+        // Checking if the admin with their id exists in the database
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             return "administrator/add_admin";
         }
+
+        // If not return the view from the "invalid request" template
         return "administrator/invalid_request";
     }
 
+    // GET mapping for getting the "Add Representative page"
     @GetMapping("/new/representative")
-    // TODO make request param optional
-
     public String getRepresentativeAddView(@RequestParam("requesterId") String requesterId, Model model) {
+        // Checking if the admin with their id exists in the database
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             return "administrator/add_rep";
         }
+        // If not return the view from the "invalid request" template
         return "administrator/invalid_request";
     }
 
+    // GET mapping for getting the "Manage Representatives page"
     @GetMapping("/manage/representatives")
     public String getRepresentativeManageView(@RequestParam("requesterId") String requesterId, Model model) {
-        // TODO make request param optional
-
+        // Checking if the admin with their id exists in the database
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             model.addAttribute("representatives", adminService.getRepresentatives());
@@ -54,13 +61,13 @@ public class AdminController {
             return "administrator/manage_reps";
         }
         model.addAttribute("errorMessage", "Request from an unauthorized sources are forbidden!");
+        // If not return the view from the "invalid request" template
         return "administrator/invalid_request";
     }
 
+    // GET mapping for getting the "Update Representative page"
     @GetMapping("/update/representative")
     public String getEditRepresentativeView(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
-        // TODO make request param optional
-
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             try {
@@ -107,8 +114,6 @@ public class AdminController {
 
     @GetMapping("/update/product")
     public String getEditProductView(@RequestParam("requesterId") String requesterId, @RequestParam("targetId") String targetId, Model model) {
-        // TODO make request param optional
-
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             try {
@@ -145,7 +150,6 @@ public class AdminController {
 
     @GetMapping("/manage/products")
     public String getProductManageView(@RequestParam("requesterId") String requesterId, Model model) {
-        // TODO make request param optional
         if (adminService.existsAdminById(requesterId)) {
             model.addAttribute("requesterId", requesterId);
             model.addAttribute("products", adminService.getProducts());
@@ -190,7 +194,6 @@ public class AdminController {
 
     @PostMapping("/new/administrator")
     public String addAdmin(@Valid @ModelAttribute("admin") Admin admin, Model model) {
-        // TODO make request param optional
         try {
             adminService.saveAdmin(admin);
             model.addAllAttributes(new HashMap<String, Object>() {{
