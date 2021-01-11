@@ -163,9 +163,11 @@ public class AdminController {
     @GetMapping("/analyze/sales/representative")
     public String getAnalyzeSalesByRepView(@RequestParam("requesterId") String requesterId, @RequestParam(value = "targetId", required = false) String targetId, Model model) {
         if (adminService.existsAdminById(requesterId)) {
-            model.addAttribute("requesterId", requesterId);
-            model.addAttribute("pickBy", "salesRep");
-            model.addAttribute("salesReps", adminService.getRepresentatives());
+            model.addAllAttributes(new HashMap<String, Object>() {{
+                put("requesterId", requesterId);
+                put("pickBy", "salesRep");
+                put("salesReps", adminService.getRepresentatives());
+            }});
             if (targetId != null) {
                 try {
                     model.addAttribute("sales", adminService.getSalesBySalesRep(targetId));

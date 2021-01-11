@@ -2,7 +2,7 @@ package com.businessproject.demo.configuration;
 
 public interface IValidationPatterns {
     /**
-     * Pattern for any name start with a capital letter and continues with small letters
+     * Pattern for any name start with a capital letter and continuing with small letters
      */
     String NAME_PATTERN = "^[A-Z][a-z]+$";
     /**
