@@ -125,3 +125,7 @@ BusinessProjectSap
 * Save the changes to the file
 * Rebuild and rerun the project
 
+## License
+
+This project is licensed under the MIT License - *see
+the* [LICENSE.md](https://github.com/ptaushanov/BusinessProjectSAP/blob/master/LICENSE) *file for details.*
