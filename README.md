@@ -29,27 +29,27 @@ Manage all activities regarding your sales and ease through troublesome tasks in
 
 ## Building the project
 
-Install Java SE Development Kit 8 (if not installed)
+Install Java SE Development Kit 8 (if not installed)  
 https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
 
-Clone the GitHub repository
-``
-git clone https://github.com/ptaushanov/BusinessProjectSAP.git
-``
+* Clone the GitHub repository:  
+  ``
+  git clone https://github.com/ptaushanov/BusinessProjectSAP.git
+  ``
 
-Change directory
-`` cd BusinessProjectSAP``
+* Change directory:  
+  `` cd BusinessProjectSAP``
 
-Run Gradle's build command
-``./gradlew build`` (Linux/Mac)
-``gradlew.bat build`` (Windows)
+* Run Gradle's build command:  
+  ``./gradlew build`` (Linux/Mac)  
+  ``gradlew.bat build`` (Windows)
 
 Wait for the process to finish and we are done!
 
 ## Running the project
 
-In the project's root directory run the following command:
-``./gradlew bootRun``(Linux/Mac)
+In the project's root directory run the following command:  
+``./gradlew bootRun``(Linux/Mac)  
 ``gradlew.bat bootRun`` (Windows)
 
 ## Setting up a local database
@@ -57,7 +57,7 @@ In the project's root directory run the following command:
 By default the project comes with a **MongoDB** database hosted on **MongoDB Atlas** cloud database, but that can be
 changed easily.
 
-* Download and Install **MongoDB Compass**:
+* Download and Install **MongoDB Compass**:  
   https://www.mongodb.com/products/compass
 
 * Create a local database from MongoDB Compass:
@@ -117,9 +117,9 @@ BusinessProjectSap
 		   └─── application.properties
 ```
 
-* Change **spring.data.mongodb.uri** to:
-  ``spring.data.mongodb.uri=mongodb://localhost:27017/AplicationDB``
-  Change the port to the port of your local **MongoDB** database if needed.
+* Change **spring.data.mongodb.uri** to:  
+  ``spring.data.mongodb.uri=mongodb://localhost:27017/AplicationDB``  
+  Change the port to the port of your local **MongoDB** database if needed.  
   (Replace **27017** with the correct port)
 
 * Save the changes to the file
