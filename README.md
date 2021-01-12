@@ -118,7 +118,7 @@ BusinessProjectSap
 ```
 
 * Change **spring.data.mongodb.uri** to:  
-  ``spring.data.mongodb.uri=mongodb://localhost:27017/AplicationDB``  
+  ``spring.data.mongodb.uri=mongodb://localhost:27017/ApplicationDB``  
   Change the port to the port of your local **MongoDB** database if needed.  
   (Replace **27017** with the correct port)
 
