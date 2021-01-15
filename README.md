@@ -52,6 +52,9 @@ In the project's root directory run the following command:
 ``./gradlew bootRun``(Linux/Mac)  
 ``gradlew.bat bootRun`` (Windows)
 
+Default port is set to 3000.   
+It can be changed in **"application.properties"**
+
 ## Setting up a local database
 
 By default the project comes with a **MongoDB** database hosted on **MongoDB Atlas** cloud database, but that can be
